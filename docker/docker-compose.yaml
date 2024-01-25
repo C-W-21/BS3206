@@ -1,0 +1,35 @@
+version: "3"
+name: bs3206
+
+services:
+  frontend:
+    image: bs3206-img-frontend:latest
+    build: 
+      context: ../frontend
+      dockerfile: ../docker/frontend.dockerfile
+    ports:
+      - "80:3000"
+    networks:
+      - frontend 
+      - dmz
+
+  backend:
+    image: bs3206-img-backend:latest
+    build:
+      context: ../backend
+      dockerfile: ../docker/backend.dockerfile
+    expose: 
+      - 3000
+    networks:
+      - backend 
+      - dmz
+
+  # database: # placeholder 
+  
+networks:
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge
+  dmz:
+    driver: bridge

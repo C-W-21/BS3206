@@ -1,0 +1,18 @@
+services:
+  frontend:
+    image: node:alpine3.19
+    working_dir: /app
+    entrypoint: ["npm", "run", "dev"]
+    restart: unless-stopped
+    volumes:
+      - "../frontend:/app"
+
+  backend:
+    image: node:alpine3.19
+    working_dir: /app
+    entrypoint: ["npm", "run", "dev"]
+    restart: unless-stopped
+    volumes:
+      - "../backend:/app"
+    ports:
+      - "8080:3000"
