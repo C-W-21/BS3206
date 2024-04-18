@@ -37,7 +37,7 @@ services:
     networks:
       - backend
     volumes:
-      - ./database/build-scripts:/docker-entrypoint-initdb.d:555
+      - ../database/build-scripts:/docker-entrypoint-initdb.d:555
     environment:
       MYSQL_ROOT_PASSWORD: pass 
       MYSQL_USER: user
