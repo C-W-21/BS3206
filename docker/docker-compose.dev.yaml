@@ -15,4 +15,8 @@ services:
     volumes:
       - "../backend:/app"
     ports:
-      - "8080:3000"
+      - 8080:3000
+
+  database:
+    ports:
+      - 3306:3306

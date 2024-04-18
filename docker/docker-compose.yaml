@@ -3,17 +3,21 @@ name: bs3206
 
 services:
   frontend:
+    hostname: frontend
+    container_name: frontend
     image: bs3206-img-frontend:latest
     build: 
       context: ../frontend
       dockerfile: ../docker/frontend.dockerfile
     ports:
-      - "80:3000"
+      - 80:3000
     networks:
       - frontend 
       - dmz
 
   backend:
+    hostname: backend
+    container_name: backend
     image: bs3206-img-backend:latest
     build:
       context: ../backend
@@ -24,12 +28,25 @@ services:
       - backend 
       - dmz
 
-  # database: # placeholder 
-  
+  database:
+    hostname: database
+    container_name: database
+    image: mysql:8.3.0-oraclelinux8
+    expose:
+      - 3306
+    networks:
+      - backend
+    volumes:
+      - ./database/build-scripts:/docker-entrypoint-initdb.d:555
+    environment:
+      MYSQL_ROOT_PASSWORD: pass 
+      MYSQL_USER: user
+      MYSQL_PASSWORD: pass
+
 networks:
   frontend:
     driver: bridge
-  backend:
-    driver: bridge
   dmz:
+    driver: bridge
+  backend:
     driver: bridge

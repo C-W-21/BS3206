@@ -9,7 +9,7 @@
 ## Developing on the stack
 The front end uses [NextJS](https://nextjs.org) (a [ReactJS](https://react.dev) derivative), ideally all UI components should be taken from google's [MUI](https://mui.com/material-ui/) package. Note that we are using the newer 'app' routing method for managing multiple pages. The backend uses [Express](https://expressjs.com) to host an API. The database is currently TBC.
 
-There are two environments, both hosted locally: dev (development), and prd (production). The development environment is where most of your work will be centred as it supports hot reloading (HMR) so that the front and back ends are updated live as you update the code without having to re-build them. The production environment statically compiles the application. To get started, [deploy the dev stack](#deploy-stack) and [access it](#accessing-the-stack).
+There are two environments, both hosted locally: dev (development), and prd (production). The development environment is where most of your work will be centred as it supports hot reloading (HMR) so that the front and back ends are updated live, as you change and save the code, without having to re-build or re-start them. The production environment statically compiles the application. To get started, [deploy the dev stack](#deploy-stack) and [access it](#accessing-the-stack).
 
 ## Deploy stack
 Most interactions with the application stack will be done using `make` which is a tool for writing small scripts called 'targets', these are defined in `./Makefile` found in the project root directory. All make commands should be executed from the project root.
@@ -24,10 +24,10 @@ Most interactions with the application stack will be done using `make` which is 
     make dev-env-down
     ```
 
-The same operation also apply to the production stack which uses `make prd-env-up` and `make prd-env-down` respectively.
+The same operations also apply to the production stack which uses `make prd-env-up` and `make prd-env-down` respectively.
 
 ## Accessing the stack
 Use the below addresses to access the various components from the **host** machine:
 - [frontend](http://localhost)
 - [backend](http://localhost:8080) (dev only)
-- database TBC
+- database: `server=localhost;uid=root;pwd=pass` (dev only)
