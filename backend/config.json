@@ -1,0 +1,8 @@
+{
+    "api": {
+        "port": 3000
+    },
+    "geoapify": {
+        "key": "99148ac452354fdb811bf756aeff7673"
+    }
+}
