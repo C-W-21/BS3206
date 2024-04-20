@@ -2,20 +2,26 @@ services:
   frontend:
     image: node:alpine3.19
     working_dir: /app
-    entrypoint: ["npm", "run", "dev"]
+    entrypoint: ["npm"]
+    command: ["run", "dev"]
     restart: unless-stopped
     volumes:
-      - "../frontend:/app"
+      - ../frontend:/app:755
+    environment:
+      WATCHPACK_POLLING: true # Enables HMR for Windows
 
   backend:
     image: node:alpine3.19
     working_dir: /app
-    entrypoint: ["npm", "run", "dev"]
+    entrypoint: ["npm"]
+    command: ["run", "dev"]
     restart: unless-stopped
     volumes:
-      - "../backend:/app"
+      - ../backend:/app:755
     ports:
       - 8080:3000
+    environment:
+      WATCHPACK_POLLING: true # Enables HMR for Windows
 
   database:
     ports:
