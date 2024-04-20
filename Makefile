@@ -10,3 +10,6 @@ prd-env-up:
 
 prd-env-down:
 	docker compose -f docker/docker-compose.yaml down
+
+test-backend:
+	docker compose -f docker/docker-compose.backend.test.yaml run --rm newman

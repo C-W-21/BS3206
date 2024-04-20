@@ -1,0 +1,17 @@
+version: "3"
+name: bs3206
+
+services:
+  newman:
+    hostname: newman
+    container_name: newman
+    image: postman/newman:6.1.1-alpine
+    networks:
+      - bs3206_backend
+    volumes:
+      - ../testing/backend:/etc/newman:555
+    command: ["run", "--env-var", "ENDPOINT=backend:3000", "BS3206.postman_collection.json"]
+
+networks:
+  bs3206_backend:
+    external: true

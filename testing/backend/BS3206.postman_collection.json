@@ -1,0 +1,133 @@
+{
+	"info": {
+		"_postman_id": "c7ad2962-3b84-48f6-a562-742a3bb413d8",
+		"name": "BS3206",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "route finding",
+			"item": [
+				{
+					"name": "POST /route",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"JSON body is returned\", function () {\r",
+									"    pm.response.to.have.jsonBody();\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body contains original waypoints\", function () {\r",
+									"    const req = JSON.parse(pm.request.body);\r",
+									"    const rsp = pm.response.json();\r",
+									"    pm.expect(rsp.properties.waypoints[0]).to.eql(req.src);\r",
+									"    pm.expect(rsp.properties.waypoints[1]).to.eql(req.dest);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"src\": {\r\n        \"lat\": 51.248587,\r\n        \"lon\": -1.087913\r\n    },\r\n    \"dest\": {\r\n        \"lat\": 51.407998,\r\n        \"lon\": -0.776213\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{ENDPOINT}}/route",
+							"protocol": "http",
+							"host": [
+								"{{ENDPOINT}}"
+							],
+							"path": [
+								"route"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "GET /ping",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"JSON body is returned\", function () {\r",
+							"    pm.response.to.have.jsonBody();\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Body contains pong\", function () {\r",
+							"    pm.expect(pm.response.json()).to.eql({ \"msg\": \"pong\" });\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{ENDPOINT}}/ping",
+					"protocol": "http",
+					"host": [
+						"{{ENDPOINT}}"
+					],
+					"path": [
+						"ping"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "ENDPOINT",
+			"value": "localhost:8080",
+			"type": "default"
+		}
+	]
+}

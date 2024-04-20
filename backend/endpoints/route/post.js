@@ -4,7 +4,7 @@ module.exports = async function handler(req, res) {
     const data = req.body;
 
     const qryParams = {
-        waypoints: `${data.src.lat},${data.src.lon}|${data.dest.lat},${data.src.lon}`,
+        waypoints: `${data.src.lat},${data.src.lon}|${data.dest.lat},${data.dest.lon}`,
         mode: data.mode,
         type: data.type,
         apiKey: config.geoapify.key,
@@ -20,18 +20,18 @@ module.exports = async function handler(req, res) {
     };
     var qryList = [];
     for (key in qryParams) {
-        qryList.push(`${key}=${qryParams[key] == undefined || qryParams[key] == null ? qryDefaults[key] : qryParams[key]}`)
+        qryList.push(`${key}=${qryParams[key] == undefined || qryParams[key] == null ? qryDefaults[key] : qryParams[key]}`);
     }
-    const qryStr = qryList.join("&")
+    const qryStr = qryList.join("&");
 
-    const url = `https://api.geoapify.com/v1/routing?${qryStr}`
+    const url = `https://api.geoapify.com/v1/routing?${qryStr}`;
 
-    const geoApiRsp = await fetch(url)
-    res.status(geoApiRsp.status)
+    const geoApiRsp = await fetch(url);
+    res.status(geoApiRsp.status);
     if (geoApiRsp.status === 200) {
-        const geoApiRspJson = await geoApiRsp.json()
-        res.json(geoApiRspJson)
+        const geoApiRspJson = await geoApiRsp.json();
+        res.json(geoApiRspJson);
     } else {
-        res.send(geoApiRsp.text())
+        res.send(geoApiRsp.text());
     }
 }

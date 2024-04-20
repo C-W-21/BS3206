@@ -11,6 +11,23 @@ The front end uses [NextJS](https://nextjs.org) (a [ReactJS](https://react.dev) 
 
 There are two environments, both hosted locally: dev (development), and prd (production). The development environment is where most of your work will be centred as it supports hot reloading (HMR) so that the front and back ends are updated live, as you change and save the code, without having to re-build or re-start them. The production environment statically compiles the application. To get started, [deploy the dev stack](#deploy-stack) and [access it](#accessing-the-stack).
 
+### Project Structure
+The project is laid out as follows:
+- [**backend/**](./backend/README.md)<br/>
+    This directory contains the javascript express project for the REST API. Follow the link to read more. 
+- **database/**<br/>
+    This directory contains all database related scripts and designs.
+    - **build-scripts**<br/>
+        Any SQL files stored here will be executed on initial database startup.
+- **docker/**<br/>
+    This directory contains all docker files and compose files needed to run the environment.
+- **frontend/**<br/>
+    This directory contains the javascript nextjs project for the web application.
+- [**testing/**](./testing/README.md)<br/>
+    This directory contains all materials needed for testing the various components of the application.
+- **Makefile**<br/>
+    This file contains all script commands needed to interact with this project.
+
 ## Deploy stack
 Most interactions with the application stack will be done using `make` which is a tool for writing small scripts called 'targets', these are defined in `./Makefile` found in the project root directory. All make commands should be executed from the project root.
 
