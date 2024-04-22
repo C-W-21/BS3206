@@ -1,0 +1,35 @@
+{
+    "properties": {
+        "mode": { "enum": ["drive", "light_truck", "medium_truck", "truck", "heavy_truck", "truck_dangerous_goods", "long_truck"] },
+        "waypoints": {
+            "elements": {
+                "properties": {
+                    "location": { 
+                        "elements": {
+                            "type": "float64"
+                        }
+                    }
+                },
+                "optionalProperties": {
+                    "original_index": { "type": "uint16" }
+                }
+            }
+        },
+        "units": { "enum": ["metric", "imperial"] },
+        "traffic": { "enum": ["free_flow", "aproximated"] },
+        "distance": { "type": "uint32" },
+        "distance_units": { "type": "string" },
+        "time": { "type": "float64" },
+        "geometry": {
+            "elements": {
+                "elements": {
+                    "properties": {
+                        "lat": { "type": "float64" },
+                        "lon": { "type": "float64" }
+                    }
+                }
+            }
+        }
+    },
+    "additionalProperties": true 
+}
