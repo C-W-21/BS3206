@@ -2,7 +2,8 @@
 
 import { useEffect } from "react";
 import { Box, Button, Container, ThemeProvider } from "@mui/material";
-import theme from "./theme"; 
+import theme from "./theme";
+import CommonLayout from "./commonLayout";
 
 // Check connectivity to API
 function pingApi() {
@@ -25,7 +26,9 @@ export default function Home() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Button href="/route" variant="contained">Plan Route</Button>
+      <CommonLayout>
+        <Button href="/route" variant="contained">Plan Route</Button>
+      </CommonLayout>
     </ThemeProvider>
   );
 }
