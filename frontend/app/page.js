@@ -1,7 +1,8 @@
 'use client'
 
 import { useEffect } from "react";
-import { Box, Button, Container } from "@mui/material";
+import { Box, Button, Container, ThemeProvider } from "@mui/material";
+import theme from "../styles/theme"; 
 
 // Check connectivity to API
 function pingApi() {
@@ -23,14 +24,8 @@ export default function Home() {
   useEffect(pingApi, [])
 
   return (
-    <Box 
-      sx={{
-        height: '100vh',
-        wodth: '100vw',
-        backgroundColor: 'darkgreen'
-      }}
-    >
+    <ThemeProvider theme={theme}>
       <Button href="/route" variant="contained">Plan Route</Button>
-    </Box>
+    </ThemeProvider>
   );
 }
