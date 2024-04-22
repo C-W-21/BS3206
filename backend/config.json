@@ -1,0 +1,14 @@
+{
+    "api": {
+        "port": 3000
+    },
+    "mysql": {
+        "host": "database",
+        "user": "root",
+        "pass": "pass",
+        "timeout": 60000
+    },
+    "geoapify": {
+        "key": "99148ac452354fdb811bf756aeff7673"
+    }
+}

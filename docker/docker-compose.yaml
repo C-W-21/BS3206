@@ -3,6 +3,8 @@ name: bs3206
 
 services:
   frontend:
+    depends_on: 
+      - backend
     hostname: frontend
     container_name: frontend
     image: bs3206-img-frontend:latest
@@ -16,6 +18,8 @@ services:
       - dmz
 
   backend:
+    depends_on: 
+      - database
     hostname: backend
     container_name: backend
     image: bs3206-img-backend:latest
@@ -37,7 +41,7 @@ services:
     networks:
       - backend
     volumes:
-      - ./database/build-scripts:/docker-entrypoint-initdb.d:555
+      - ../database/build-scripts:/docker-entrypoint-initdb.d:555
     environment:
       MYSQL_ROOT_PASSWORD: pass 
       MYSQL_USER: user
