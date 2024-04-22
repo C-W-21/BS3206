@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { Box, Button, Container, ThemeProvider } from "@mui/material";
-import theme from "../styles/theme"; 
+import theme from "../theme"; 
 
 // Check connectivity to API
 function pingApi() {
