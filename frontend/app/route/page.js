@@ -44,8 +44,8 @@ export default function Page() {
     const calculateRoute = async () => {
         const targetRoutes = [
             { goal: "balanced", colour: "blue" },
-            { goal: "short", colour: "green" },
-            { goal: "less_maneuvers", colour: "red" }
+            { goal: "less_maneuvers", colour: "red" },
+            { goal: "short", colour: "green" }
         ]
 
         var bbox = [[null, null], [null, null]]
@@ -112,11 +112,19 @@ export default function Page() {
                             />
                             { src.length === 2 && <Marker position={src}><Popup>Source</Popup></Marker> }
                             { dest.length === 2 && <Marker position={dest}><Popup>Destination</Popup></Marker> }
-                            { routes.map((route, i) => { return <Polyline positions={route.positions} color={route.colour} /> }) }
+                            { routes.map((route, i) => { return <Polyline key={i} positions={route.positions} color={route.colour} /> }) }
                         </MapContainer>
                     </Box>
                 </Stack>
             </Stack>
         </Box>
     )
+}
+
+function historicRoutesPopover() {
+
+}
+
+function routeInfoPopover() {
+    
 }
