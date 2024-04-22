@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "npm i && nodemon",
+    "dev": "npm i && nodemon --legacy-watch",
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -12,7 +12,8 @@
   "license": "ISC",
   "dependencies": {
     "ajv": "^8.12.0",
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "mysql2": "^3.9.7"
   },
   "devDependencies": {
     "nodemon": "^3.0.3"

@@ -6,6 +6,7 @@ const AjvJtd = require('ajv/dist/jtd');
 
 // Local package imports
 const routing = require('./routing.js');
+const dbHandler = require('./dbHandler.js');
 const config = require('./config.json');
 
 // Configure packages
@@ -64,6 +65,9 @@ function addRoutes() {
         }
     }
 }
+
+// Connect to database
+dbHandler.connect();
 
 // Configure and start the application
 app.use(express.json());
