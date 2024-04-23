@@ -46,7 +46,7 @@ module.exports = async function handler(req, res) {
                                     "traffic": route.traffic,
                                     "distance": route.distance,
                                     "distance_units": route.distance_units,
-                                    "time": route.time,
+                                    "time": parseFloat(route.time),
                                     "legs": null,
                                     "geometry": route.route.map((leg, k) => {
                                         return leg.map((point, l) => {

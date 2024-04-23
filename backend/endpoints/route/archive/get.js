@@ -30,12 +30,12 @@ module.exports = async function handler(req, res) {
                             "time_generated": result.time_generated,
                             "occupants": result.occupants,
                             "src": {
-                                "lat": result.src.x,
-                                "lon": result.src.y
+                                "lat": result.src.y,
+                                "lon": result.src.x
                             },
                             "dest": {
-                                "lat": result.dest.x,
-                                "lon": result.dest.y
+                                "lat": result.dest.y,
+                                "lon": result.dest.x
                             }
                         }
                     })
