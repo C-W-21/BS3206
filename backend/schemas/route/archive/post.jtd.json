@@ -1,0 +1,17 @@
+{
+    "properties": {
+        "occupants": { "type": "uint32" },
+        "src": {
+            "properties": {
+                "lat": { "type": "float64" },
+                "lon": { "type": "float64" }
+            }
+        },
+        "dest": {
+            "properties": {
+                "lat": { "type": "float64" },
+                "lon": { "type": "float64" }
+            }
+        }
+    }
+}

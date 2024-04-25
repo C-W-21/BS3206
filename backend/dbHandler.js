@@ -2,18 +2,24 @@ const mysql = require('mysql2')
 const config = require('./config.json')
 const { exit } = require('process');
 
-const connection = mysql.createConnection({
+const pool = mysql.createPool({
     host: config.mysql.host,
     user: config.mysql.user,
     password: config.mysql.pass,
-    connectTimeout: config.mysql.timeout
+    connectTimeout: config.mysql.timeout,
+    connectionLimit: 100
 });
 
 async function connect() {
     try {
         await new Promise((resolve, reject) => {
-            connection.connect((err) => {
-                err ? reject(err) : resolve();
+            pool.getConnection((err, conn) => {
+                if (err) {
+                    reject(err)
+                } else {
+                    resolve()
+                    conn.release()
+                }
             })
         }) 
         console.log("Connected to database")
@@ -25,5 +31,5 @@ async function connect() {
 
 module.exports = { 
     connect,
-    connection
+    pool
 };

@@ -1,34 +1,23 @@
 {
 	"info": {
-		"_postman_id": "c7ad2962-3b84-48f6-a562-742a3bb413d8",
+		"_postman_id": "425336d5-60dd-4208-855c-b3909cee11c3",
 		"name": "BS3206",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30266899"
 	},
 	"item": [
 		{
-			"name": "route finding",
+			"name": "UC00x TC00x - Route Archiving",
 			"item": [
 				{
-					"name": "POST /route",
+					"name": "Archive Route Meta",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"JSON body is returned\", function () {\r",
-									"    pm.response.to.have.jsonBody();\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Body contains original waypoints\", function () {\r",
-									"    const req = JSON.parse(pm.request.body);\r",
-									"    const rsp = pm.response.json();\r",
-									"    pm.expect(rsp.properties.waypoints[0]).to.eql(req.src);\r",
-									"    pm.expect(rsp.properties.waypoints[1]).to.eql(req.dest);\r",
-									"});\r",
+									"pm.environment.set(\"META_ID\", pm.response.json().meta_id);",
+									"pm.environment.set(\"META\", pm.request.body.raw);",
 									""
 								],
 								"type": "text/javascript"
@@ -40,7 +29,110 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"src\": {\r\n        \"lat\": 51.248587,\r\n        \"lon\": -1.087913\r\n    },\r\n    \"dest\": {\r\n        \"lat\": 51.407998,\r\n        \"lon\": -0.776213\r\n    }\r\n}",
+							"raw": "{\r\n    \"occupants\": 4,\r\n    \"src\": {\r\n        \"lat\": 51.248587,\r\n        \"lon\": -1.087913\r\n    },\r\n    \"dest\": {\r\n        \"lat\": 51.407998,\r\n        \"lon\": -0.776213\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{ENDPOINT}}/route/archive",
+							"protocol": "http",
+							"host": [
+								"{{ENDPOINT}}"
+							],
+							"path": [
+								"route",
+								"archive"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Archived Meta",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const metaId = pm.environment.get(\"META_ID\")",
+									"const expMeta = JSON.parse(pm.environment.get(\"META\"));",
+									"const rspObj = pm.response.json().find(obj => obj.meta_id === metaId)",
+									"",
+									"pm.test(\"Archived route metadata is present\", function () {",
+									"    pm.expect(rspObj).to.exist",
+									"});",
+									"",
+									"pm.test(\"Archived route metadata is correct\", function() {",
+									"    pm.expect(rspObj[\"src\"]).to.eql(expMeta.src)",
+									"    pm.expect(rspObj[\"dest\"]).to.eql(expMeta.dest)",
+									"    pm.expect(rspObj[\"occupants\"]).to.eql(expMeta.occupants)",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{ENDPOINT}}/route/archive",
+							"protocol": "http",
+							"host": [
+								"{{ENDPOINT}}"
+							],
+							"path": [
+								"route",
+								"archive"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Calculate Route (Easy)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const req = JSON.parse(pm.request.body);\r",
+									"const rsp = pm.response.json();\r",
+									"\r",
+									"pm.environment.set(\"RT_EASY\", JSON.stringify(rsp.results[0]));\r",
+									"\r",
+									"pm.test(\"Body contains original waypoints\", function () {\r",
+									"    pm.expect(rsp.properties.waypoints[0]).to.eql(req.src);\r",
+									"    pm.expect(rsp.properties.waypoints[1]).to.eql(req.dest);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const metaObj = JSON.parse(pm.environment.get(\"META\"))",
+									"pm.environment.set(\"RT_SRC\", JSON.stringify(metaObj.src))",
+									"pm.environment.set(\"RT_DEST\", JSON.stringify(metaObj.dest))",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"src\": {{RT_SRC}},\r\n    \"dest\": {{RT_DEST}},\r\n    \"type\": \"less_maneuvers\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -59,8 +151,250 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Calculate Route (Efficient)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const req = JSON.parse(pm.request.body);\r",
+									"const rsp = pm.response.json();\r",
+									"\r",
+									"pm.environment.set(\"RT_EFFICIENT\", JSON.stringify(rsp.results[0]));\r",
+									"\r",
+									"pm.test(\"Body contains original waypoints\", function () {\r",
+									"    pm.expect(rsp.properties.waypoints[0]).to.eql(req.src);\r",
+									"    pm.expect(rsp.properties.waypoints[1]).to.eql(req.dest);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const metaObj = JSON.parse(pm.environment.get(\"META\"))",
+									"pm.environment.set(\"RT_SRC\", JSON.stringify(metaObj.src))",
+									"pm.environment.set(\"RT_DEST\", JSON.stringify(metaObj.dest))",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"src\": {{RT_SRC}},\r\n    \"dest\": {{RT_DEST}},\r\n    \"type\": \"short\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{ENDPOINT}}/route",
+							"protocol": "http",
+							"host": [
+								"{{ENDPOINT}}"
+							],
+							"path": [
+								"route"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Archive Route (Easy)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const rsp = pm.response.json();",
+									"",
+									"pm.test(\"Response contains ID\", function () {",
+									"    pm.expect(rsp[\"route_id\"]).to.exist",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{{RT_EASY}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{ENDPOINT}}/route/archive/{{META_ID}}",
+							"protocol": "http",
+							"host": [
+								"{{ENDPOINT}}"
+							],
+							"path": [
+								"route",
+								"archive",
+								"{{META_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Archive Route (Efficient)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const rsp = pm.response.json();",
+									"",
+									"pm.test(\"Response contains ID\", function () {",
+									"    pm.expect(rsp[\"route_id\"]).to.exist",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{{RT_EFFICIENT}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{ENDPOINT}}/route/archive/{{META_ID}}",
+							"protocol": "http",
+							"host": [
+								"{{ENDPOINT}}"
+							],
+							"path": [
+								"route",
+								"archive",
+								"{{META_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Both Archived Routes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const rsp = pm.response.json();",
+									"const expMeta = JSON.parse(pm.environment.get(\"META\"))",
+									"",
+									"pm.test(\"Routes are returned\", function () {",
+									"    pm.expect(rsp[\"results\"]).to.exist;",
+									"    pm.expect(rsp[\"results\"].length).to.eql(2);",
+									"})",
+									"",
+									"pm.test(\"Meta is returned\", function () {",
+									"    pm.expect(rsp[\"properties\"]).to.exist;",
+									"    pm.expect(rsp[\"properties\"][\"waypoints\"]).to.exist;",
+									"})",
+									"",
+									"pm.test(\"Routes are accurate\", function () {",
+									"    let rtEasy = rsp[\"results\"][0];",
+									"    delete rtEasy.legs;",
+									"    let expRtEasy = JSON.parse(pm.environment.get(\"RT_EASY\"));",
+									"    delete expRtEasy.legs;",
+									"    pm.expect(rtEasy).to.eql(expRtEasy);",
+									"",
+									"    let rtEfficient = rsp[\"results\"][1];",
+									"    delete rtEfficient.legs;",
+									"    let expRtEfficient = JSON.parse(pm.environment.get(\"RT_EFFICIENT\"));",
+									"    delete expRtEfficient.legs;",
+									"    pm.expect(rtEfficient).to.eql(expRtEfficient);",
+									"})",
+									"",
+									"pm.test(\"Meta is accurate\", function () {",
+									"    const wayPts = rsp[\"properties\"][\"waypoints\"];",
+									"    pm.expect(wayPts[0]).to.eql(expMeta.src);",
+									"    pm.expect(wayPts[1]).to.eql(expMeta.dest);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{ENDPOINT}}/route/archive/{{META_ID}}",
+							"protocol": "http",
+							"host": [
+								"{{ENDPOINT}}"
+							],
+							"path": [
+								"route",
+								"archive",
+								"{{META_ID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"JSON body is returned\", function () {",
+							"    pm.response.to.have.jsonBody();",
+							"});",
+							""
+						]
+					}
 				}
 			]
+		},
+		{
+			"name": "UC00x TC00x - Route Finding and Vehicle Assignment",
+			"item": []
 		},
 		{
 			"name": "GET /ping",
