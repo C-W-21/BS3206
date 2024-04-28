@@ -30,7 +30,7 @@ module.exports = async function handler(req, res) {
                             return;
                         }
                         
-                        rsp[key[i]] = {id: result[0][0].id};
+                        rsp[keys[i]] = {id: result[0][0].id};
                         if (Object.keys(rsp).length === keys.length) resolve();
                     })
                 }
