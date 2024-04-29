@@ -97,7 +97,7 @@ export default function Page() {
                             <Typography variant="h5">Info</Typography>
                             <TextField label="Occupants" defaultValue="test" />
                             <Box flexGrow={1} />
-                            <Button variant="contained" onClick={calculateRoute} color="buttonSecondary">Calculate</Button>
+                            <Button variant="contained" onClick={calculateRoute} style={{ color: '#ffffff' }}>Calculate</Button>
                         </Stack>
                         <Divider orientation="vertical"/>
                         <Box sx={{ height: 1, width: 1 }}>
