@@ -78,16 +78,16 @@ export default function Page() {
         console.log(centre)
     }
 
+    const pageTitle = "Plan Route";
+
     return (
         <ThemeProvider theme={theme}>
-            <CommonLayout>
+            <CommonLayout title={pageTitle}>
                 <Stack spacing={2} sx={{ height: 1, width: 1 }}>
                     <Stack direction="row" padding={2}>
-                        <Button href="/" variant="contained">Home</Button>
                     </Stack>
                     <Stack spacing={2} direction="row" sx={{ height: 1, width: 1 }}>
                         <Stack spacing={2} sx={{ height: 1 }}>
-                            <Typography variant="h3">Plan Route</Typography>
                             <Typography variant="h5">Source</Typography>
                             <TextField label="Latitude" value={src[0]} />
                             <TextField label="Longitude" value={src[1]} />
@@ -97,7 +97,7 @@ export default function Page() {
                             <Typography variant="h5">Info</Typography>
                             <TextField label="Occupants" defaultValue="test" />
                             <Box flexGrow={1} />
-                            <Button variant="contained" onClick={calculateRoute}>Calculate</Button>
+                            <Button variant="contained" onClick={calculateRoute} color="buttonSecondary">Calculate</Button>
                         </Stack>
                         <Divider orientation="vertical"/>
                         <Box sx={{ height: 1, width: 1 }}>

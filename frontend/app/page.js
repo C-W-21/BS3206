@@ -21,13 +21,14 @@ function pingApi() {
 }
 
 export default function Home() {
+  const pageTitle = "Emissions Calculator";
+
   // Check API connectivity on page load
   useEffect(pingApi, [])
 
   return (
     <ThemeProvider theme={theme}>
-      <CommonLayout>
-        <Button href="/route" variant="contained">Plan Route</Button>
+      <CommonLayout title={pageTitle}>
       </CommonLayout>
     </ThemeProvider>
   );
