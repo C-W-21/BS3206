@@ -9,5 +9,5 @@ module.exports = routes = {
         GET: {
             handler: "./endpoints/ping/get.js"
         }
-    }
+    },
 };
