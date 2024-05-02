@@ -1,12 +1,14 @@
 'use client'
 
 import { createElement, useEffect, useRef, useState } from "react";
-import { Alert, Box, Button, Collapse, Divider, FormControlLabel, FormGroup, Grid, List, ListItem, ListItemText, MenuItem, Modal, Paper, Stack, Switch, TextField, Typography } from "@mui/material";
+import { Alert, Box, Button, Collapse, ThemeProvider, Divider, FormControlLabel, FormGroup, Grid, List, ListItem, ListItemText, MenuItem, Modal, Paper, Stack, Switch, TextField, Typography } from "@mui/material";
 
 import { MapContainer, TileLayer, Marker, Popup, Polyline } from 'react-leaflet';
 import "leaflet-defaulticon-compatibility"
 import 'leaflet/dist/leaflet.css';
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css"
+import Theme from "../theme";
+import CommonLayout from "../commonLayout"
 
 import {archiveMeta, archiveRoute, archiveVehicles, calculateVehicles, getArchivedMeta, getArchivedRoutes, getArchivedVehicles, planRoute, transformRoute} from "./api.js";
 import { v4 as uuidv4 } from 'uuid';
@@ -142,23 +144,25 @@ export default function Page() {
         destLat: () => !isNaN(dest[0]),
         destLon: () => !isNaN(dest[1]),
         occupants: () => !isNaN(occupants) && occupants > 0
-    };
+    };  
+
+    const pageTitle = "Plan Route"
 
     return (
+        
+    <ThemeProvider theme={Theme}>
+        <CommonLayout title={pageTitle}>    
         <Box 
             sx={{
-                height: '100vh',
-                width: '100vw',
-                backgroundColor: 'white'
+                height: '100%',
+                width: '100%',
+                
             }}
             padding={4}
         >
+    
             <Stack spacing={2} sx={{ height: 1, width: 1 }}>
-                <Grid container padding={2} sx={{ backgroundColor: 'darkgreen' }} direction="row" justifyContent="space-between" alignItems="center">
-                    <Button href="/" variant="contained">Home</Button>
-                    <Typography variant="h4">Plan Route</Typography>
-                    <Box />
-                </Grid>
+           
                 <Stack spacing={2} direction="row" sx={{ height: 1, width: 1 }}>
                     <Stack spacing={2} sx={{ height: 1 }}>
                         <Typography variant="h5" align="center">New Route</Typography>
@@ -300,6 +304,8 @@ export default function Page() {
                 </Stack>
             </Modal>
         </Box>
+        </CommonLayout>
+    </ThemeProvider>
     ) // TODO: make modal pretty 
 }
 
