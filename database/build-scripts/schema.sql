@@ -23,6 +23,14 @@ CREATE SCHEMA IF NOT EXISTS `rt` ;
 -- Schema ims
 -- -----------------------------------------------------
 CREATE SCHEMA IF NOT EXISTS `ims` ;
+-- -----------------------------------------------------
+-- Schema login
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema login
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `login` ;
 USE `rt` ;
 
 -- -----------------------------------------------------
@@ -200,6 +208,20 @@ CREATE  OR REPLACE VIEW `vehicles_utility_specifications` AS
         vs.occupants
 	FROM vehicles AS v
     INNER JOIN vehicle_specifications AS vs ON vs.id = v.specifications_id;
+
+-- -----------------------------------------------------
+-- Table `ims`.`vehicle_specifications`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `login`.`login` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `username` VARCHAR(255) NOT NULL,
+  `password` VARCHAR(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
+  UNIQUE INDEX `username_UNIQUE` (`username` ASC) VISIBLE)
+ENGINE = InnoDB;
+
+USE `login` ;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

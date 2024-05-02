@@ -42,5 +42,5 @@ module.exports = routes = {
         GET: {
             handler: "./endpoints/route/archive/_metaId/_routeId/vehicles/get.js"
         }
-    }
+    },
 };
