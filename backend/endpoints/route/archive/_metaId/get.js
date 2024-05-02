@@ -16,7 +16,7 @@ module.exports = async function handler(req, res) {
                     return;
                 }
 
-                conn.query('SELECT * FROM saved_routes_meta WHERE id = ?', metaId, (err, result) => {
+                conn.query('SELECT * FROM rt.saved_routes_meta WHERE id = ?', metaId, (err, result) => {
                     if (err) {
                         reject(err);
                         return;
@@ -24,7 +24,7 @@ module.exports = async function handler(req, res) {
                     
                     const metaInfo = result[0]
                     
-                    conn.query('SELECT * FROM saved_routes WHERE meta_id = ?', metaId, (err, result) => {
+                    conn.query('SELECT * FROM rt.saved_routes WHERE meta_id = ?', metaId, (err, result) => {
                         conn.release();
         
                         if (err) {
@@ -35,6 +35,7 @@ module.exports = async function handler(req, res) {
                         res.json({
                             "results": result.map((route, i) => {
                                 return {
+                                    "id": route.id,
                                     "mode": route.mode,
                                     "waypoints": route.waypoints.map((waypoint, j) => {
                                         return {

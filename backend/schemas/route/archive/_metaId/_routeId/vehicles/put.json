@@ -1,0 +1,18 @@
+{
+    "type": "object",
+    "properties": {
+        "vehicles": {
+            "type": "object",
+            "additionalProperties": {
+                "type": "object",
+                "properties": {
+                    "emissions": { "type": "number" },
+                    "id": { "type": "integer" }
+                },
+                "required": ["emissions"]
+            }
+        },
+        "emissions": { "type": "number" }
+    },
+    "required": ["vehicles"]
+}

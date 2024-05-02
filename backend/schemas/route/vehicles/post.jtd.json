@@ -1,0 +1,6 @@
+{
+    "properties": {
+        "distance": { "type": "uint32" },
+        "occupants": { "type": "uint32" }
+    }
+}

@@ -1,5 +1,6 @@
-const mysql = require('mysql2')
-const config = require('./config.json')
+const mysql = require('mysql2');
+const retry = require('retry');
+const config = require('./config.json');
 const { exit } = require('process');
 
 const pool = mysql.createPool({
@@ -10,22 +11,39 @@ const pool = mysql.createPool({
     connectionLimit: 100
 });
 
+const retryOpts = {
+    retries: 5,
+    factor: 1,
+    minTimeout: 5000 // 5s
+};
+
 async function connect() {
+    const operation = retry.operation(retryOpts);
+
     try {
         await new Promise((resolve, reject) => {
-            pool.getConnection((err, conn) => {
-                if (err) {
-                    reject(err)
-                } else {
-                    resolve()
-                    conn.release()
-                }
-            })
-        }) 
-        console.log("Connected to database")
+            operation.attempt(function(attempt) {
+                pool.getConnection((err, conn) => {
+                    if (operation.retry(err)) {
+                        console.warn("Failed to connect to MySQL DB, polling...");
+                        return;
+                    }
+    
+                    if (err) {
+                        console.error(`Failed to connect to MySQL after ${attempt} attempt(s), stopping.`);
+                        reject(err);
+                    } else {
+                        conn.release();
+                        resolve();
+                    }
+                });
+            });
+        });
+
+        console.log("Connected to MySQL DB");
     } catch (err) {
-        console.error(err)
-        exit(1)
+        console.error(err);
+        exit(1);
     }
 } 
 

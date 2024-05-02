@@ -16,7 +16,7 @@ module.exports = async function handler(req, res) {
                     return;
                 }
 
-                conn.execute('SELECT * FROM saved_routes_meta ORDER BY time_generated DESC', (err, results) => {
+                conn.execute('SELECT * FROM rt.saved_routes_meta ORDER BY time_generated DESC', (err, results) => {
                     conn.release();
     
                     if (err) {

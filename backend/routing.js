@@ -10,6 +10,12 @@ module.exports = routes = {
             schema: "./schemas/route/post.jtd.json"
         }
     },
+    "/route/vehicles": {
+        POST: {
+            handler: "./endpoints/route/vehicles/post.js",
+            schema: "./schemas/route/vehicles/post.jtd.json"
+        }
+    },
     "/route/archive": {
         POST: {
             handler: "./endpoints/route/archive/post.js",
@@ -26,6 +32,15 @@ module.exports = routes = {
         },
         GET: {
             handler: "./endpoints/route/archive/_metaId/get.js"
+        }
+    },
+    "/route/archive/:metaId/:routeId/vehicles": {
+        PUT: {
+            handler: "./endpoints/route/archive/_metaId/_routeId/vehicles/put.js",
+            schema: "./schemas/route/archive/_metaId/_routeId/vehicles/put.json"
+        },
+        GET: {
+            handler: "./endpoints/route/archive/_metaId/_routeId/vehicles/get.js"
         }
     },
     "/updatevehicle":{

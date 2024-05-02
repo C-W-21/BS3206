@@ -1,7 +1,9 @@
 'use client'
 
 import { useEffect } from "react";
-import { Box, Button, Container } from "@mui/material";
+import { Box, Button, Container, ThemeProvider } from "@mui/material";
+import theme from "./theme";
+import CommonLayout from "./commonLayout";
 
 // Check connectivity to API
 function pingApi() {
@@ -19,18 +21,15 @@ function pingApi() {
 }
 
 export default function Home() {
+  const pageTitle = "Emissions Calculator";
+
   // Check API connectivity on page load
   useEffect(pingApi, [])
 
   return (
-    <Box 
-      sx={{
-        height: '100vh',
-        wodth: '100vw',
-        backgroundColor: 'darkgreen'
-      }}
-    >
-      <Button href="/route" variant="contained">Plan Route</Button>
-    </Box>
+    <ThemeProvider theme={theme}>
+      <CommonLayout title={pageTitle}>
+      </CommonLayout>
+    </ThemeProvider>
   );
 }
