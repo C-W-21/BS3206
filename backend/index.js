@@ -66,16 +66,21 @@ function addRoutes() {
     }
 }
 
-// Connect to database
-dbHandler.connect();
+async function init() {
+    // Connect to database
+    await dbHandler.connect();
 
-// Configure and start the application
-app.use(express.json());
-addRoutes();
-app.listen(config.api.port, (error) =>{ 
-    if(!error) 
-        console.log("Server is Successfully Running, and App is listening on port "+ config.api.port) 
-    else 
-        console.log("Error occurred, server can't start", error); 
-    } 
-); 
+    // Configure and start the application
+    app.use(express.json({ limit: "50mb" }));
+    addRoutes();
+    app.listen(config.api.port, (error) =>{ 
+        if(!error) 
+            console.log("Server is Successfully Running, and App is listening on port "+ config.api.port) 
+        else 
+            console.log("Error occurred, server can't start", error); 
+        } 
+    ); 
+
+}
+
+init()
