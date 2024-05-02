@@ -43,4 +43,14 @@ module.exports = routes = {
             handler: "./endpoints/route/archive/_metaId/_routeId/vehicles/get.js"
         }
     },
+    "/login": {
+        GET: {
+            handler: "./endpoints/login/get.js"
+        }
+    },
+    "/signup": {
+        POST: {
+            handler: "./endpoints/signup/post.js",
+        },
+    }
 };
