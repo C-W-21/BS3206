@@ -28,7 +28,7 @@ function calculateVehicles(occupants, vehicles) {
     vehicles = vehicles.map((vehicle) => {
         vehicle.emissions = parseFloat(vehicle.emissions);
 
-        if (vehicle.occupants >= occupants && (lowestSingleEmissions === null || vehicle.emissions < lowestSingleEmissions)) {
+        if (vehicle.occupancy >= occupants && (lowestSingleEmissions === null || vehicle.emissions < lowestSingleEmissions)) {
             lowestSingleEmissions = vehicle.emissions;
         }
 
@@ -36,7 +36,7 @@ function calculateVehicles(occupants, vehicles) {
     });
 
     // Filter out large occupancy vehicles that would carry everyone in one vehicle but would produce excessive emissions compared to other options
-    if (lowestSingleEmissions !== null) vehicles = vehicles.filter(vehicle => vehicle.occupants < occupants || vehicle.emissions <= lowestSingleEmissions);
+    if (lowestSingleEmissions !== null) vehicles = vehicles.filter(vehicle => vehicle.occupancy < occupants || vehicle.emissions <= lowestSingleEmissions);
 
     // recursive function which identifies what other cars are needed to meet desired occupancy
     const addVehicleToCombo = (selfIndex, vList, combo) => {
@@ -44,7 +44,7 @@ function calculateVehicles(occupants, vehicles) {
         combo = {
             vehicles: {...combo.vehicles, [self.license_plate]: { emissions: self.emissions }},
             totalEmissions: combo.totalEmissions + self.emissions,
-            totalOccupancy: combo.totalOccupancy + self.occupants
+            totalOccupancy: combo.totalOccupancy + self.occupancy
         };
 
         // if current combination of vehicles meets desired occupancy then return it as an option
