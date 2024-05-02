@@ -27,5 +27,33 @@ module.exports = routes = {
         GET: {
             handler: "./endpoints/route/archive/_metaId/get.js"
         }
+    },
+    "/updatevehicle":{
+        POST:{
+            handler:"./endpoints/updatevehicle/post.js"
+        },
+        GET:{
+            handler:"./endpoints/updatevehicle/get.js"
+        }
+    },
+    "/getvehiclebyid":{
+        GET:{
+            handler:"./endpoints/getvehiclebyid/get.js"
+        }
+    },
+    "/createvehicle":{
+        POST:{
+            handler:"./endpoints/createvehicle/post.js"
+        }
+    },
+    "/getjoinedvehicle":{
+        GET:{
+            handler:"./endpoints/getjoinedvehicle/get.js"
+        }
+    },
+    "/deletevehicle":{
+        GET:{
+            handler:"./endpoints/deletevehicle/get.js"
+        }
     }
 };

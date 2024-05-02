@@ -1,7 +1,7 @@
 const dbHandler = require('../../dbHandler.js')
 
 module.exports = async function handler(req, res) {
-    const data = req.body;
+    const searchQuery = req.query.rh;
 
     await new Promise((resolve, reject) => {
         dbHandler.pool.getConnection((err, conn) => {
@@ -16,19 +16,17 @@ module.exports = async function handler(req, res) {
                     return;
                 }
 
-                conn.execute('CALL UpdateVehicle(?,?,?,?,?,?)', data, (err, results) => {
+                conn.query('CALL DeleteVehicle(?)', searchQuery, (err, results) => {
                     conn.release();
     
                     if (err) {
                         reject(err);
                         return;
                     }
-                    
-                    console.log(results)
+                    res.json(fmtResult)
                     resolve()
                 })
             })
         })
     })
-
 }
