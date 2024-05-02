@@ -30,6 +30,8 @@ function addRoutes() {
             var middleware = (req, res, next) => { next() };
             const schemaPath = routing[urlPath][method].schema;
             if (schemaPath !== undefined) {
+
+                // Assign correct schema parser for the schema type
                 var compiledSchema;
                 if (schemaPath.endsWith(".jtd.json")) {
                     compiledSchema = ajvJtd.compile(JSON.parse(fs.readFileSync(schemaPath)));
@@ -43,7 +45,7 @@ function addRoutes() {
                 };
             }
             
-            // Add route
+            // Add route by method
             const handler = require(routing[urlPath][method].handler);
             switch (method) {
                 case "POST":

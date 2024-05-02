@@ -1,5 +1,6 @@
 const dbHandler = require('../../../dbHandler.js')
 
+// Calculate most efficient vehicles to use given the distance and occupants of a trip
 module.exports = async function handler(req, res) {
     const data = req.body;
 
@@ -8,6 +9,7 @@ module.exports = async function handler(req, res) {
 
     res.status(200);
     
+    // Convert rate of emissions to quantity for the trip
     Object.entries(vehicles).forEach(([key, val]) => {
         vehicles[key].emissions = emissionsRateToQty(val.emissions, data.distance);
     })
@@ -24,6 +26,7 @@ function emissionsRateToQty(rate, distance) {
 }
 
 function calculateVehicles(occupants, vehicles) {
+    // Work out the lowest emissions of any vehicle that can carry everyone in one
     let lowestSingleEmissions = null;
     vehicles = vehicles.map((vehicle) => {
         vehicle.emissions = parseFloat(vehicle.emissions);
@@ -76,18 +79,21 @@ function calculateVehicles(occupants, vehicles) {
 
 async function getVehicles() {
     return new Promise((resolve, reject) => {
+        // Get connection from pool
         dbHandler.pool.getConnection((err, conn) => {
             if (err) {
                 reject(err);
                 return;
             }
 
+            // Set database
             conn.changeUser({ database: "ims" }, (err) => {
                 if (err) {
                     reject(err);
                     return;
                 }
 
+                // Run query
                 conn.execute('SELECT * FROM ims.vehicles_utility_specifications', (err, results) => {
                     conn.release();
     

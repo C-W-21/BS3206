@@ -1,16 +1,19 @@
 const dbHandler = require('../../../../dbHandler.js')
 
+// Save route associated with metadata
 module.exports = async function handler(req, res) {
     const metaId = req.params.metaId
     const data = req.body
 
     await new Promise((resolve, reject) => {
+        // Get new connection from pool
         dbHandler.pool.getConnection((err, conn) => {
             if (err) {
                 reject(err);
                 return;
             }
 
+            // Set database
             conn.changeUser({ database: "rt" }, (err) => {
                 if (err) {
                     reject(err);
@@ -37,6 +40,7 @@ module.exports = async function handler(req, res) {
                 })
                 const geometryQry = `MULTILINESTRING(${geometryQryParts.join(", ")})`
 
+                // Run query
                 conn.query(`CALL create_route(?, ?, ?, ?, ?, ?, ?, ${waypointsQry}, ${geometryQry})`, [
                     metaId, 
                     data.mode, 

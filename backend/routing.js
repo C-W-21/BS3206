@@ -1,3 +1,4 @@
+// This file defines handler and schema files for each endpoint within this project
 module.exports = routes = {
     "/ping": {
         GET: {

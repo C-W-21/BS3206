@@ -1,21 +1,25 @@
 const dbHandler = require('../../../../dbHandler.js')
 
+// Get saved routes associated with metadata
 module.exports = async function handler(req, res) {
     const metaId = req.params.metaId
 
     await new Promise((resolve, reject) => {
+        // Get new connection from pool
         dbHandler.pool.getConnection((err, conn) => {
             if (err) {
                 reject(err);
                 return;
             }
 
+            // Set database
             conn.changeUser({ database: "rt" }, (err) => {
                 if (err) {
                     reject(err);
                     return;
                 }
 
+                // Run query to get metadata
                 conn.query('SELECT * FROM rt.saved_routes_meta WHERE id = ?', metaId, (err, result) => {
                     if (err) {
                         reject(err);
@@ -24,6 +28,7 @@ module.exports = async function handler(req, res) {
                     
                     const metaInfo = result[0]
                     
+                    // Run query to get routes
                     conn.query('SELECT * FROM rt.saved_routes WHERE meta_id = ?', metaId, (err, result) => {
                         conn.release();
         
@@ -32,6 +37,7 @@ module.exports = async function handler(req, res) {
                             return;
                         }
                         
+                        // Transform data for client to be consistent with originally generated data from external API
                         res.json({
                             "results": result.map((route, i) => {
                                 return {
