@@ -149,163 +149,159 @@ export default function Page() {
     const pageTitle = "Plan Route"
 
     return (
-        
-    <ThemeProvider theme={Theme}>
-        <CommonLayout title={pageTitle}>    
-        <Box 
-            sx={{
-                height: '100%',
-                width: '100%',
-                
-            }}
-            padding={4}
-        >
-    
-            <Stack spacing={2} sx={{ height: 1, width: 1 }}>
-           
-                <Stack spacing={2} direction="row" sx={{ height: 1, width: 1 }}>
-                    <Stack spacing={2} sx={{ height: 1 }}>
-                        <Typography variant="h5" align="center">New Route</Typography>
-                        <Typography>Source</Typography>
-                        <TextField 
-                            label="Latitude" 
-                            size="small"
-                            value={isNaN(src[0]) ? "" : src[0]} 
-                            onChange={e => {
-                                setRoutes([]);
-                                setCanSave(false);
-                                setSrc([parseFloat(e.target.value), src[1]]);
-                            }}
-                            error={!valid.srcLat()}
-                        />
-                        <TextField 
-                            label="Longitude" 
-                            size="small"
-                            value={isNaN(src[1]) ? "" : src[1]} 
-                            onChange={e => {
-                                setRoutes([]);
-                                setCanSave(false);
-                                setSrc([src[0], parseFloat(e.target.value)]);
-                            }}
-                            error={!valid.srcLon()}
-                        />
-                        <Typography>Destination</Typography>
-                        <TextField 
-                            label="Latitude" 
-                            size="small"
-                            value={isNaN(dest[0]) ? "" : dest[0]} 
-                            onChange={e => {
-                                setRoutes([]);
-                                setCanSave(false);
-                                setDest([parseFloat(e.target.value), dest[1]]);
-                            }}
-                            error={!valid.destLat()}
-                        />
-                        <TextField 
-                            label="Longitude" 
-                            size="small"
-                            value={isNaN(dest[1]) ? "" : dest[1]} 
-                            onChange={e => {
-                                setRoutes([]);
-                                setCanSave(false);
-                                setDest([dest[0], parseFloat(e.target.value)]);
-                            }}
-                            error={!valid.destLon()}
-                        />
-                        <Typography>Info</Typography>
-                        <TextField 
-                            label="Occupants"
-                            size="small" 
-                            value={isNaN(occupants) ? "" : occupants} 
-                            onChange={e => setOccupants(Math.abs(parseInt(e.target.value)))} 
-                            error={!valid.occupants()}
-                        />
-                        <Button 
-                            variant="contained" 
-                            onClick={() => calculateRoute(false)} 
-                            size="small"
-                            disabled={!Object.values(valid).map(func => func()).every(Boolean)}
-                        >Calculate</Button>
-
-                        <Divider />
-
-                        <Typography variant="h5" align="center">Saved Route</Typography>
-                        <TextField
-                            label="Save ID"
-                            size="small"
-                            value={saveId}
-                            select
-                            onChange={e => setSaveId(e.target.value)}
-                        >
-                            {savedRtIds.length > 0 && savedRtIds.map((id) =>
-                                <MenuItem key={id} value={id}>{id}</MenuItem>
-                            )}
-                        </TextField>
-                        
-                        <Button 
-                            variant="contained" 
-                            onClick={() => calculateRoute(true)} 
-                            size="small" 
-                            disabled={saveId === ""}
-                        >Load</Button>
-
-                        <Divider />
-
-                        <Box flexGrow={1} />
-                        <Button 
-                            variant="contained" 
-                            size="small" 
-                            disabled={!(canSave && valid.occupants())}
-                            onClick={save}
-                        >Save Route</Button>
-                        <FormGroup>
-                            <FormControlLabel 
-                                control={
-                                    <Switch 
-                                        checked={showRouteInfo} 
-                                        onChange={e => setShowRouteInfo(e.target.checked)}
-                                        disabled={rawRoutes.length === 0}
-                                    />
-                                }
-                                label="View Results"
-                            />
-                        </FormGroup>
-                    </Stack>
-                    <Divider orientation="vertical"/>
-                    <Stack direction="row" sx={{ height: 1, width: 1 }}>
-                        <Box sx={{ height: 1, width: 1 }}>
-                            <MapContainer center={[51.207153, -1.976895]} zoom={15} style={{ height: '100%', width: '100%' }} ref={mapRef}>
-                                <TileLayer
-                                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        <ThemeProvider theme={Theme}>
+            <CommonLayout title={pageTitle}>    
+                <Box 
+                    sx={{
+                        height: '100%',
+                        width: '100%',
+                    }}
+                    padding={4}
+                >
+                    <Stack spacing={2} sx={{ height: 1, width: 1 }}>
+                        <Stack spacing={2} direction="row" sx={{ height: 1, width: 1 }}>
+                            <Stack spacing={2} sx={{ height: 1 }}>
+                                <Typography variant="h5" align="center">New Route</Typography>
+                                <Typography>Source</Typography>
+                                <TextField 
+                                    label="Latitude" 
+                                    size="small"
+                                    value={isNaN(src[0]) ? "" : src[0]} 
+                                    onChange={e => {
+                                        setRoutes([]);
+                                        setCanSave(false);
+                                        setSrc([parseFloat(e.target.value), src[1]]);
+                                    }}
+                                    error={!valid.srcLat()}
                                 />
-                                { !isNaN(src[0]) && !isNaN(src[1]) && <Marker position={src}><Popup>Source</Popup></Marker> }
-                                { !isNaN(dest[0]) && !isNaN(dest[1]) && <Marker position={dest}><Popup>Destination</Popup></Marker> }
-                                { routes.map((route, i) => <Polyline key={i} positions={route.positions} color={route.colour} /> ) }
-                            </MapContainer>
-                        </Box>
-                        <Box flexGrow>
-                            <RouteInfoPopover 
-                                show={showRouteInfo} 
-                                occupants={occupants} 
-                                rawRoutes={rawRoutes} 
-                                vehicles={rawVehicles} 
-                                vehiclesSetter={setRawVehicles}
-                                skipCalculate={skipVehicleCalculate}
-                                setSkipCalculate={setSkipVehicleCalculate}
-                            />
-                        </Box>
+                                <TextField 
+                                    label="Longitude" 
+                                    size="small"
+                                    value={isNaN(src[1]) ? "" : src[1]} 
+                                    onChange={e => {
+                                        setRoutes([]);
+                                        setCanSave(false);
+                                        setSrc([src[0], parseFloat(e.target.value)]);
+                                    }}
+                                    error={!valid.srcLon()}
+                                />
+                                <Typography>Destination</Typography>
+                                <TextField 
+                                    label="Latitude" 
+                                    size="small"
+                                    value={isNaN(dest[0]) ? "" : dest[0]} 
+                                    onChange={e => {
+                                        setRoutes([]);
+                                        setCanSave(false);
+                                        setDest([parseFloat(e.target.value), dest[1]]);
+                                    }}
+                                    error={!valid.destLat()}
+                                />
+                                <TextField 
+                                    label="Longitude" 
+                                    size="small"
+                                    value={isNaN(dest[1]) ? "" : dest[1]} 
+                                    onChange={e => {
+                                        setRoutes([]);
+                                        setCanSave(false);
+                                        setDest([dest[0], parseFloat(e.target.value)]);
+                                    }}
+                                    error={!valid.destLon()}
+                                />
+                                <Typography>Info</Typography>
+                                <TextField 
+                                    label="Occupants"
+                                    size="small" 
+                                    value={isNaN(occupants) ? "" : occupants} 
+                                    onChange={e => setOccupants(Math.abs(parseInt(e.target.value)))} 
+                                    error={!valid.occupants()}
+                                />
+                                <Button 
+                                    variant="contained" 
+                                    onClick={() => calculateRoute(false)} 
+                                    size="small"
+                                    disabled={!Object.values(valid).map(func => func()).every(Boolean)}
+                                >Calculate</Button>
+
+                                <Divider />
+
+                                <Typography variant="h5" align="center">Saved Route</Typography>
+                                <TextField
+                                    label="Save ID"
+                                    size="small"
+                                    value={saveId}
+                                    select
+                                    onChange={e => setSaveId(e.target.value)}
+                                >
+                                    {savedRtIds.length > 0 && savedRtIds.map((id) =>
+                                        <MenuItem key={id} value={id}>{id}</MenuItem>
+                                    )}
+                                </TextField>
+                                
+                                <Button 
+                                    variant="contained" 
+                                    onClick={() => calculateRoute(true)} 
+                                    size="small" 
+                                    disabled={saveId === ""}
+                                >Load</Button>
+
+                                <Divider />
+
+                                <Box flexGrow={1} />
+                                <Button 
+                                    variant="contained" 
+                                    size="small" 
+                                    disabled={!(canSave && valid.occupants())}
+                                    onClick={save}
+                                >Save Route</Button>
+                                <FormGroup>
+                                    <FormControlLabel 
+                                        control={
+                                            <Switch 
+                                                checked={showRouteInfo} 
+                                                onChange={e => setShowRouteInfo(e.target.checked)}
+                                                disabled={rawRoutes.length === 0}
+                                            />
+                                        }
+                                        label="View Results"
+                                    />
+                                </FormGroup>
+                            </Stack>
+                            <Divider orientation="vertical"/>
+                            <Stack direction="row" sx={{ height: 1, width: 1 }}>
+                                <Box sx={{ height: 1, width: 1 }}>
+                                    <MapContainer center={[51.207153, -1.976895]} zoom={15} style={{ height: '100%', width: '100%' }} ref={mapRef}>
+                                        <TileLayer
+                                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                                            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                                        />
+                                        { !isNaN(src[0]) && !isNaN(src[1]) && <Marker position={src}><Popup>Source</Popup></Marker> }
+                                        { !isNaN(dest[0]) && !isNaN(dest[1]) && <Marker position={dest}><Popup>Destination</Popup></Marker> }
+                                        { routes.map((route, i) => <Polyline key={i} positions={route.positions} color={route.colour} /> ) }
+                                    </MapContainer>
+                                </Box>
+                                <Box flexGrow>
+                                    <RouteInfoPopover 
+                                        show={showRouteInfo} 
+                                        occupants={occupants} 
+                                        rawRoutes={rawRoutes} 
+                                        vehicles={rawVehicles} 
+                                        vehiclesSetter={setRawVehicles}
+                                        skipCalculate={skipVehicleCalculate}
+                                        setSkipCalculate={setSkipVehicleCalculate}
+                                    />
+                                </Box>
+                            </Stack>
+                        </Stack>
                     </Stack>
-                </Stack>
-            </Stack>
-            <Modal open={Object.keys(userAlerts).length > 0}>  
-                <Stack>
-                    {Object.values(userAlerts)}
-                </Stack>
-            </Modal>
-        </Box>
-        </CommonLayout>
-    </ThemeProvider>
+                    <Modal open={Object.keys(userAlerts).length > 0}>  
+                        <Stack>
+                            {Object.values(userAlerts)}
+                        </Stack>
+                    </Modal>
+                </Box>
+            </CommonLayout>
+        </ThemeProvider>
     ) // TODO: make modal pretty 
 }
 
