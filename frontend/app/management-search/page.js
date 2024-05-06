@@ -56,9 +56,6 @@ const SearchPage = () => {
             {filteredData.map((item) => (
           <Grid2 key={item.id} onClick={() => handleItemClick(item.id)}>
             <Link href={`/management?search=${item.id}`}>
-            <Grid2 xs={8}>
-                <img src={item.image} alt={item.brand} />
-            </Grid2>
             <Grid2 xs={4}>
                 <Grid2 xs={6}>
                     <Typography >{item.brand}</Typography >

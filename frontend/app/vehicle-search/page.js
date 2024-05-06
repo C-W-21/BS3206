@@ -89,9 +89,6 @@ const SearchPage = () => {
       />
             {filteredData.map((item) => (
           <Grid2 key={item.id} onClick={() => handleItemClick(item.license)}>
-            <Grid2 xs={8}>
-                <img src={item.image} alt={item.license} />
-            </Grid2>
             <Grid2 xs={4}>
             <Grid2 xs={6}>
                     <Typography >{item.license}</Typography >

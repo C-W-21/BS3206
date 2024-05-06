@@ -6,14 +6,12 @@ import LicensePlateInput from '../components/LicensePlateInput';
 import{v4 as uuidv4} from 'uuid';
 
 const CreateVehiclePage = () => {
-  const [selectedImage, setSelectedImage] = useState(null)
   const [vehicleBrand, setVehicleBrand] = useState('')
   const [vehicleModel, setVehicleModel] = useState('')
   const [vehicleEmissions, setVehicleEmissions] = useState('')
   const [vehicleCapacity, setVehicleCapacity] = useState('')
   const [isLicensePlateInputVisible, setIsLicensePlateInputVisible] = useState(false);
   const [submittedLicensePlate, setLicensePlate] = useState('');
-  var imageURL = ""
   const searchParams = useSearchParams()
   const [updatedBase64String, base64String] = useState('');
   const [userAlerts, setUserAlerts] = useState({});
@@ -26,7 +24,6 @@ const CreateVehiclePage = () => {
   if(search != null){
     fetch(`/api/v1/getvehiclebyid?rh=${search}`).then((rsp) => {
       rsp.json().then((obj) => {
-        // setSelectedImage(obj[0].image)
         setVehicleBrand(obj[0].brand)
         setVehicleModel(obj[0].model)
         setVehicleEmissions(obj[0].emissions)
@@ -77,22 +74,8 @@ const CreateVehiclePage = () => {
   const rspObj = await rsp.json() 
 
   console.log('New details successfully uploaded to the database!');
-  addAlert("success", `${text} has been successfully removed from the database`);
+  addAlert("success", `${text} has been created in the database`);
   return rspObj
-  };
-
-  const handleImageChange = (event) => {
-    const file = event.target.files[0]
-    let reader = new FileReader();
-    reader.onload = function() {
-      base64String(reader.result.replace("data:", "").replace(/^.+,/, ""));
-      // console.log(base64String);
-    }
-    reader.readAsDataURL(file);
-
-    // imageURL = URL.createObjectURL(file)
-    setSelectedImage(`data:image/png;base64, ${updatedBase64String}`)
-    // console.log(imageURL)
   };
 
   const handleBrandChange = (event) => {
@@ -146,8 +129,6 @@ const CreateVehiclePage = () => {
         <Stack spacing={2} direction="row" sx={{ height: 1, width: 1 }}>
             <Stack spacing={2} sx={{ height: 1 }}>
             <Button variant="text" onClick={handleSubmit} style={{ float: 'right' }}>Upload Details</Button>
-            <TextField type="file" accept="image/*" onChange={handleImageChange} />
-        {selectedImage && <img src={selectedImage} alt="Selected Vehicle" style={{ maxWidth: '200px', maxHeight: '200px' }} />}
         <TextField id="vehicleBrand" label="Vehicle Brand" type="text" value={vehicleBrand} onChange={handleBrandChange} />
         <TextField id="vehicleModel" label="Vehicle Model" type="text" value={vehicleModel} onChange={handleModelChange} />
         <TextField id="vehicleEmissions" label="Vehicle Emissions" type="text" value={vehicleEmissions} onChange={handleEmissionsChange} />

@@ -29,7 +29,6 @@ module.exports = async function handler(req, res) {
                             "brand": result.brand,
                             "model": result.model,
                             "emissions": result.emissions,
-                            "image": result.image,
                             "capacity": result.occupancy
                         }
                     })
