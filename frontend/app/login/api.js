@@ -2,18 +2,17 @@ const commHeaders = {
     "Content-Type": "application/json"
 }
 
-export async function LoginAPI(username, password) {
+export async function LoginAPI(username, hashedPassword) {
     const req = {
         username: username,
-        password: password,
+        password: hashedPassword,
     }
 
-    const rsp = await fetch("/api/v1/signup", { 
+    const rsp = await fetch("/api/v1/login", { 
         method: "POST", 
         headers: commHeaders,
-        body: JSON.stringify(req) 
+        body: JSON.stringify(req)
     })
-
 
     console.log(rsp)
 

@@ -44,8 +44,8 @@ module.exports = routes = {
         }
     },
     "/login": {
-        GET: {
-            handler: "./endpoints/login/get.js"
+        POST: {
+            handler: "./endpoints/login/post.js"
         }
     },
     "/signup": {

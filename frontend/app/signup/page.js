@@ -5,32 +5,44 @@ import { Box, Button, Typography, ThemeProvider, TextField } from "@mui/material
 import theme from "../theme";
 import Validation from "./validation";
 import signup from "./api";
+import bcrypt from 'bcryptjs';
 
 
 function SignUp() {
     const [values, setValues] = useState({
-       username: '',
-       password: '' 
-    })
+        username: '',
+        password: ''
+    });
 
-    const [errors, setErrors] = useState({
+    const [errors, setErrors] = useState({});
 
-    })
-  
-    const handleInput =(event) => {
-      setValues(prev => ({...prev, [event.target.name]: [event.target.value]}))
-    }
-  
-    const bcrypt = require('bcryptjs'); 
+    const handleInput = (event) => {
+        setValues(prev => ({ ...prev, [event.target.name]: event.target.value }));
+    };
 
     const handleSubmit = async (event) => {
-    event.preventDefault();
-    setErrors(Validation(values));
-    const { username, password } = values;
-    const hashedPassword = await bcrypt.hash(password.toString(), 10); 
-    signup(username, hashedPassword);
-    window.location.href = '/login';
-    }
+        event.preventDefault();
+
+        const validationErrors = Validation(values);
+        setErrors(validationErrors);
+
+        const isValid = Object.values(validationErrors).every(error => error === '');
+
+        if (isValid) {
+            const { username, password } = values;
+            try {
+                const hashedPassword = await bcrypt.hash(password, 10);
+                await signup(username, hashedPassword);
+                window.location.href = '/login';
+            } catch (error) {
+                console.error('Error during signup:', error);
+            }
+        } else {
+            console.log("Sign Up validation failed.");
+        }
+    };
+    
+    
 
     return (
         <ThemeProvider theme={theme}>

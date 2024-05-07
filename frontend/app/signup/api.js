@@ -14,7 +14,6 @@ export async function signup(username, password) {
         body: JSON.stringify(req) 
     })
 
-
     console.log(rsp)
 
     const rspObj = await rsp.json() 
