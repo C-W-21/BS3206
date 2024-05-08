@@ -13,7 +13,6 @@ const CreateVehiclePage = () => {
   const [isLicensePlateInputVisible, setIsLicensePlateInputVisible] = useState(false);
   const [submittedLicensePlate, setLicensePlate] = useState('');
   const searchParams = useSearchParams()
-  const [updatedBase64String, base64String] = useState('');
   const [userAlerts, setUserAlerts] = useState({});
   const [totalUserAttacks, setTotalUserAlerts] = useState(0);
 
@@ -95,10 +94,8 @@ const CreateVehiclePage = () => {
   };
 
   const handleSubmit = async () => {
-    
-    console.log(updatedBase64String)
 
-    const req = [null, vehicleBrand, vehicleModel, updatedBase64String, vehicleEmissions, vehicleCapacity]
+    const req = [null, vehicleBrand, vehicleModel, vehicleEmissions, vehicleCapacity]
     const rsp = await fetch("/api/v1/updatevehicle", { 
       method: "POST", 
       headers: {

@@ -32,7 +32,8 @@ const SearchPage = () => {
 
   const handleItemClick = (license) => {
     console.log('click successful for item with id:', license);
-    fetch(`/api/v1/deletevehicle?rh=${license}`).then((rsp) => {
+    fetch(`/api/v1/updatevehicle?rh=${license}`).then((rsp) => {
+        method: "DELTE",
         rsp.json().then((obj) => {
           })
     }).catch((err) => {
