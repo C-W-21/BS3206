@@ -1,3 +1,4 @@
+// This file defines handler and schema files for each endpoint within this project
 module.exports = routes = {
     "/ping": {
         GET: {
@@ -41,6 +42,34 @@ module.exports = routes = {
         },
         GET: {
             handler: "./endpoints/route/archive/_metaId/_routeId/vehicles/get.js"
+        }
+    },
+    "/updatevehicle":{
+        POST:{
+            handler:"./endpoints/updatevehicle/post.js"
+        },
+        GET:{
+            handler:"./endpoints/updatevehicle/get.js"
+        }
+    },
+    "/getvehiclebyid":{
+        GET:{
+            handler:"./endpoints/getvehiclebyid/get.js"
+        }
+    },
+    "/createvehicle":{
+        POST:{
+            handler:"./endpoints/createvehicle/post.js"
+        }
+    },
+    "/getjoinedvehicle":{
+        GET:{
+            handler:"./endpoints/getjoinedvehicle/get.js"
+        }
+    },
+    "/deletevehicle":{
+        GET:{
+            handler:"./endpoints/deletevehicle/get.js"
         }
     },
     "/login": {

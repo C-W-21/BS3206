@@ -2,6 +2,7 @@ const commHeaders = {
     "Content-Type": "application/json"
 }
 
+// Generate new route
 export async function planRoute(src, dest, goal) {
     const req = {
         src: { lat: src[0], lon: src[1] },
@@ -19,6 +20,7 @@ export async function planRoute(src, dest, goal) {
     return rspObj
 }
 
+// Extract raw coordinates to form line on screen
 export function transformRoute(routeData) {
     if (routeData == null || routeData.geometry.length === 0) return null;
     let points = [];
@@ -30,6 +32,7 @@ export function transformRoute(routeData) {
     return points;
 }
 
+// Calculate best vehicles to use for route
 export async function calculateVehicles(distance, occupants) {
     const req = {
         distance: distance,
@@ -46,6 +49,7 @@ export async function calculateVehicles(distance, occupants) {
     return rspObj
 }
 
+// Retrieve all saved metadata
 export async function getArchivedMeta() {
     const rsp = await fetch("/api/v1/route/archive")
     const rspObj = await rsp.json() 
@@ -53,6 +57,7 @@ export async function getArchivedMeta() {
     return rspObj
 }
 
+// Save metadata
 export async function archiveMeta({src, dest, occupants}) {
     const req = {
         src: { lat: src[0], lon: src[1] },
@@ -70,6 +75,7 @@ export async function archiveMeta({src, dest, occupants}) {
     return rspObj.meta_id
 }
 
+// Save route associated to metadata
 export async function archiveRoute(metaId, result) {
     const rsp = await fetch(`/api/v1/route/archive/${metaId}`, { 
         method: "PUT", 
@@ -81,6 +87,7 @@ export async function archiveRoute(metaId, result) {
     return rspObj.route_id
 }
 
+// Save vehicles associated to a route and metadata
 export async function archiveVehicles(metaId, routeId, rawVehicles) {
     const rsp = await fetch(`/api/v1/route/archive/${metaId}/${routeId}/vehicles`, { 
         method: "PUT", 
@@ -92,11 +99,13 @@ export async function archiveVehicles(metaId, routeId, rawVehicles) {
     return rspObj
 }
 
+// Get saved routes associated with a metadata entry
 export async function getArchivedRoutes(metaId) {
     const rsp = await fetch(`/api/v1/route/archive/${metaId}`)
     return await rsp.json()
 }
 
+// Get saved vehicles associated with a route and metadata entry
 export async function getArchivedVehicles(metaId, routeId) {
     const rsp = await fetch(`/api/v1/route/archive/${metaId}/${routeId}/vehicles`)
     return await rsp.json()

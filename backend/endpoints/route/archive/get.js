@@ -1,21 +1,25 @@
 const dbHandler = require('../../../dbHandler.js')
 
+// Get all saved metadata
 module.exports = async function handler(req, res) {
     const data = req.body
 
     await new Promise((resolve, reject) => {
+        // Get new connection from pool
         dbHandler.pool.getConnection((err, conn) => {
             if (err) {
                 reject(err);
                 return;
             }
 
+            // Set database
             conn.changeUser({ database: "rt" }, (err) => {
                 if (err) {
                     reject(err);
                     return;
                 }
 
+                // Run query
                 conn.execute('SELECT * FROM rt.saved_routes_meta ORDER BY time_generated DESC', (err, results) => {
                     conn.release();
     
@@ -24,6 +28,7 @@ module.exports = async function handler(req, res) {
                         return;
                     }
                     
+                    // Transform result for client
                     fmtResult = results.map((result, i) => {
                         return {
                             "meta_id": result.id,

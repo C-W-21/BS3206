@@ -3,6 +3,7 @@ const retry = require('retry');
 const config = require('./config.json');
 const { exit } = require('process');
 
+// Define connection pool for use by endpoint handlers
 const pool = mysql.createPool({
     host: config.mysql.host,
     user: config.mysql.user,
@@ -22,6 +23,7 @@ async function connect() {
 
     try {
         await new Promise((resolve, reject) => {
+            // Poll connecting database waiting for it to come online
             operation.attempt(function(attempt) {
                 pool.getConnection((err, conn) => {
                     if (operation.retry(err)) {
@@ -33,14 +35,13 @@ async function connect() {
                         console.error(`Failed to connect to MySQL after ${attempt} attempt(s), stopping.`);
                         reject(err);
                     } else {
+                        console.log("Connected to MySQL DB");
                         conn.release();
                         resolve();
                     }
                 });
             });
         });
-
-        console.log("Connected to MySQL DB");
     } catch (err) {
         console.error(err);
         exit(1);

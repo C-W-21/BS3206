@@ -5,7 +5,7 @@ import theme from "./theme";
 const CommonLayout = ({ title, children }) => {
     return (
         <ThemeProvider theme={theme}>
-        <Box display="flex" flexDirection="column" alignItems="center">
+        <Box display="flex" flexDirection="column" alignItems="center" sx={{ height: "100vh", width: "100vw" }}>
             <Box display="flex" alignItems="center" width="80%" p={1} mt={1} mb={0}>
             <Button href="/" style={{ color: '#ffffff' }}>Home</Button>
             <Button href="/route" style={{ marginLeft: '10px', color: '#ffffff' }}>Plan Route</Button>
