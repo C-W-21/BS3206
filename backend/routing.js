@@ -71,5 +71,15 @@ module.exports = routes = {
         GET:{
             handler:"./endpoints/deletevehicle/get.js"
         }
+    },
+    "/login": {
+        POST: {
+            handler: "./endpoints/login/post.js"
+        }
+    },
+    "/signup": {
+        POST: {
+            handler: "./endpoints/signup/post.js",
+        },
     }
 };

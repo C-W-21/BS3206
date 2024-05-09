@@ -1,8 +1,10 @@
 'use client'
 import { useState, useEffect } from 'react';
-import { Box, Button, Stack, TextField, Typography } from "@mui/material";
+import { Box, Button, Stack, TextField, Typography, ThemeProvider } from "@mui/material";
 import Link from 'next/link';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
+import Theme from "../theme";
+import CommonLayout from "../commonLayout"
 
 function pingApi(setSearchData) {
     fetch("/api/v1/updatevehicle").then((rsp) => {
@@ -34,18 +36,12 @@ const SearchPage = () => {
   );
 
   return (
-    <Box 
-    sx={{
-        height: '100vh',
-        width: '100vw',
-        backgroundColor: 'white'
-    }}
-    padding={4}
->
+<ThemeProvider theme={Theme}>
+  <CommonLayout title="Vehicle Specifications Search">
+    <Box sx={{ height: '100%', width: '100%' }}>
+
     <Stack spacing={2} sx={{ height: 1, width: 1 }}>
-        <Stack direction="row" padding={2} sx={{ backgroundColor: 'darkgreen' }}>
-            <Button href="/" variant="contained">Home</Button>
-        </Stack>
+
         <Stack spacing={2} direction="row" sx={{ height: 1, width: 1 }}>
             <Stack spacing={2} sx={{ height: 1 }}>
             <TextField
@@ -80,7 +76,8 @@ const SearchPage = () => {
         </Stack>
     </Stack>
 </Box>
-
+  </CommonLayout>
+</ThemeProvider>
   );
 };
 
