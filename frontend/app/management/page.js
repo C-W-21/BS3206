@@ -1,9 +1,11 @@
 'use client'
 import { useState, useEffect, createElement } from 'react';
 import { useSearchParams } from 'next/navigation'
-import { Alert, Modal, Box, Button, CardMedia, Stack, TextField } from "@mui/material";
+import { Alert, Modal, Box, Button, CardMedia, Stack, TextField, ThemeProvider } from "@mui/material";
 import LicensePlateInput from '../components/LicensePlateInput';
 import{v4 as uuidv4} from 'uuid';
+import Theme from "../theme";
+import CommonLayout from "../commonLayout"
 
 const CreateVehiclePage = () => {
   const [selectedImage, setSelectedImage] = useState(null)
@@ -131,21 +133,14 @@ const CreateVehiclePage = () => {
   };
 
   return (
-    <Box 
-    sx={{
-        height: '100vh',
-        width: '100vw',
-        backgroundColor: 'white'
-    }}
-    padding={4}
->
+  <ThemeProvider theme={Theme}>
+    <CommonLayout title="Create Vehicle">
+      <Box sx={{ height: '100%', width: '100%' }}>
     <Stack spacing={2} sx={{ height: 1, width: 1 }}>
-        <Stack direction="row" padding={2} sx={{ backgroundColor: 'darkgreen' }}>
-            <Button href="/" variant="contained">Home</Button>
-        </Stack>
+
         <Stack spacing={2} direction="row" sx={{ height: 1, width: 1 }}>
             <Stack spacing={2} sx={{ height: 1 }}>
-            <Button variant="text" onClick={handleSubmit} style={{ float: 'right' }}>Upload Details</Button>
+            <Button variant="text" onClick={handleSubmit} style={{ float: 'right', color: '#000000' }}>Upload Details</Button>
             <TextField type="file" accept="image/*" onChange={handleImageChange} />
         {selectedImage && <img src={selectedImage} alt="Selected Vehicle" style={{ maxWidth: '200px', maxHeight: '200px' }} />}
         <TextField id="vehicleBrand" label="Vehicle Brand" type="text" value={vehicleBrand} onChange={handleBrandChange} />
@@ -167,6 +162,8 @@ const CreateVehiclePage = () => {
       </Stack>
     </Modal>
 </Box>
+</CommonLayout>
+</ThemeProvider>
   );
 };
 

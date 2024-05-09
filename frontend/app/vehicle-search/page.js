@@ -1,8 +1,10 @@
 'use client'
 import { useState, useEffect, createElement } from 'react';
-import { Alert, Modal, Box, Button, Stack, TextField, Typography } from "@mui/material";
+import { Alert, Modal, Box, Button, Stack, TextField, Typography, ThemeProvider } from "@mui/material";
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import{v4 as uuidv4} from 'uuid';
+import Theme from "../theme";
+import CommonLayout from "../commonLayout"
 
 function pingApi(setSearchData, setCurrentVehAmount) {
     fetch("/api/v1/getjoinedvehicle").then((rsp) => {
@@ -68,18 +70,11 @@ const SearchPage = () => {
   }
 
   return (
-    <Box 
-    sx={{
-        height: '100vh',
-        width: '100vw',
-        backgroundColor: 'white'
-    }}
-    padding={4}
->
+  <ThemeProvider theme={Theme}>
+  <CommonLayout title="Vehicle Search">
+    <Box sx={{ height: '100%', width: '100%' }}>
     <Stack spacing={2} sx={{ height: 1, width: 1 }}>
-        <Stack direction="row" padding={2} sx={{ backgroundColor: 'darkgreen' }}>
-            <Button href="/" variant="contained">Home</Button>
-        </Stack>
+
         <Stack spacing={2} direction="row" sx={{ height: 1, width: 1 }}>
             <Stack spacing={2} sx={{ height: 1 }}>
             <TextField
@@ -121,7 +116,8 @@ const SearchPage = () => {
       </Stack>
     </Modal>
 </Box>
-
+</CommonLayout>
+</ThemeProvider>
   );
 };
 
