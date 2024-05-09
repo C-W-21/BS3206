@@ -16,14 +16,14 @@ module.exports = async function handler(req, res) {
                     return;
                 }
 
-                conn.execute('CALL UpdateVehicle(?,?,?,?,?,?)', data, (err, results) => {
+                conn.execute('CALL UpdateVehicle(?,?,?,?,?)', data, (err, results) => {
                     conn.release();
     
                     if (err) {
                         reject(err);
                         return;
                     }
-                    
+                    res.json({})
                     console.log(results)
                     resolve()
                 })

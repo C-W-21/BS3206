@@ -6,7 +6,7 @@ import{v4 as uuidv4} from 'uuid';
 import Theme from "../theme";
 import CommonLayout from "../commonLayout"
 
-function pingApi(setSearchData, setCurrentVehAmount) {
+function getSearchData(setSearchData, setCurrentVehAmount) {
     fetch("/api/v1/getjoinedvehicle").then((rsp) => {
         rsp.json().then((obj) => {
             setSearchData(obj);
@@ -25,7 +25,7 @@ const SearchPage = () => {
   const [currentVehAmount, setCurrentVehAmount] = useState(0);
   const [userAlerts, setUserAlerts] = useState({});
   const [totalUserAttacks, setTotalUserAlerts] = useState(0);
-  useEffect(()=> {pingApi(setSearchData, setCurrentVehAmount)}, [])
+  useEffect(()=> {getSearchData(setSearchData, setCurrentVehAmount)}, [])
   
   const handleChange = (e) => {
     setSearchTerm(e.target.value);
@@ -34,13 +34,17 @@ const SearchPage = () => {
 
   const handleItemClick = (license) => {
     console.log('click successful for item with id:', license);
-    fetch(`/api/v1/deletevehicle?rh=${license}`).then((rsp) => {
+    fetch(`/api/v1/updatevehicle?rh=${license}`, { 
+      method: "DELETE", 
+  }).then((rsp) => {
+    console.log("1");
         rsp.json().then((obj) => {
+          console.log("2");
           })
     }).catch((err) => {
       console.log(`Could not ping API - ${err}`)
     })
-    pingApi(setSearchData, setCurrentVehAmount)
+    getSearchData(setSearchData, setCurrentVehAmount)
     addAlert("success", `${license} has been successfully removed from the database`);
   };
 
@@ -84,9 +88,6 @@ const SearchPage = () => {
       />
             {filteredData.map((item) => (
           <Grid2 key={item.id} onClick={() => handleItemClick(item.license)}>
-            <Grid2 xs={8}>
-                <img src={item.image} alt={item.license} />
-            </Grid2>
             <Grid2 xs={4}>
             <Grid2 xs={6}>
                     <Typography >{item.license}</Typography >
