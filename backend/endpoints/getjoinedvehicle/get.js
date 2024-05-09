@@ -1,8 +1,10 @@
 const dbHandler = require('../../dbHandler.js')
 
+// Get all saved metadata
 module.exports = async function handler(req, res) {
     const data = req.body
 
+    // Get new connection from pool
     await new Promise((resolve, reject) => {
         dbHandler.pool.getConnection((err, conn) => {
             if (err) {
@@ -10,12 +12,14 @@ module.exports = async function handler(req, res) {
                 return;
             }
 
+            // Set database
             conn.changeUser({ database: "ims" }, (err) => {
                 if (err) {
                     reject(err);
                     return;
                 }
 
+                // Run query
                 conn.execute('CALL RetrieveJoinedVehicles()', (err, results) => {
                     conn.release();
     
@@ -23,6 +27,8 @@ module.exports = async function handler(req, res) {
                         reject(err);
                         return;
                     }
+
+                    // Map Results
                     fmtResult = results[0].map((result, i) => {
                         return {
                             "license": result.license_plate,
