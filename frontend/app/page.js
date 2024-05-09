@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Box, Button, Container, ThemeProvider } from "@mui/material";
 import theme from "./theme";
 import CommonLayout from "./commonLayout";
@@ -22,14 +22,28 @@ function pingApi() {
 
 export default function Home() {
   const pageTitle = "Emissions Calculator";
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Check API connectivity on page load
-  useEffect(pingApi, [])
+  useEffect(() => {
+    pingApi();
+
+    // Check if user is logged in
+    const isLoggedIn = sessionStorage.getItem('isLoggedIn');
+    if (!isLoggedIn) {
+      window.location.href = "/login";
+    } else {
+      setIsLoading(false);
+    }
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>
+      {isLoading ? (
+        <Box>Loading...</Box>
+      ) : (
       <CommonLayout title={pageTitle}>
       </CommonLayout>
+      )}
     </ThemeProvider>
   );
 }
