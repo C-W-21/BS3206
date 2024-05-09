@@ -130,7 +130,7 @@ const CreateVehiclePage = () => {
         <TextField id="vehicleCapacity" label="Vehicle Capacity"  type="text" value={vehicleCapacity} onChange={handleCapacityChange} />
 
         {(search != null) && <Button onClick={toggleLicensePlateInput}>
-        {isLicensePlateInputVisible ? 'Hide Text Input' : 'Show Text Input'}
+        {isLicensePlateInputVisible ? 'Hide License Plate Input' : 'Show  License Plate Input'}
       </Button>}
       {isLicensePlateInputVisible && <LicensePlateInput onSubmit={handleLicensePlateSubmit} />}
             </Stack>
