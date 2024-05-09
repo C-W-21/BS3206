@@ -16,7 +16,7 @@ const CreateVehiclePage = () => {
   const [userAlerts, setUserAlerts] = useState({});
   const [totalUserAttacks, setTotalUserAlerts] = useState(0);
 
-  const search = searchParams.get('search')
+ const search = searchParams.get('search')
 
   useEffect(()=> {
     console.log(search)
@@ -32,7 +32,7 @@ const CreateVehiclePage = () => {
   }).catch((err) => {
     console.log(`Could not ping API - ${err}`)
   })
-  }})
+  }}, [])
 
   const toggleLicensePlateInput = () => {
     setIsLicensePlateInputVisible(!isLicensePlateInputVisible);
@@ -70,11 +70,9 @@ const CreateVehiclePage = () => {
       },
       body: JSON.stringify(req) 
   })
-  const rspObj = await rsp.json() 
 
   console.log('New details successfully uploaded to the database!');
   addAlert("success", `${text} has been created in the database`);
-  return rspObj
   };
 
   const handleBrandChange = (event) => {
@@ -95,13 +93,13 @@ const CreateVehiclePage = () => {
 
   const handleSubmit = async () => {
 
-    const req = [null, vehicleBrand, vehicleModel, vehicleEmissions, vehicleCapacity]
+    const req = [search, vehicleBrand, vehicleModel, vehicleEmissions, vehicleCapacity]
     const rsp = await fetch("/api/v1/updatevehicle", { 
       method: "POST", 
       headers: {
           "Content-Type": "application/json"
       },
-      body: JSON.stringify(req) 
+      body: JSON.stringify(req)
   })
   const rspObj = await rsp.json() 
 
@@ -131,7 +129,7 @@ const CreateVehiclePage = () => {
         <TextField id="vehicleEmissions" label="Vehicle Emissions" type="text" value={vehicleEmissions} onChange={handleEmissionsChange} />
         <TextField id="vehicleCapacity" label="Vehicle Capacity"  type="text" value={vehicleCapacity} onChange={handleCapacityChange} />
 
-        {(!search == null) && <Button onClick={toggleLicensePlateInput}>
+        {(search != null) && <Button onClick={toggleLicensePlateInput}>
         {isLicensePlateInputVisible ? 'Hide Text Input' : 'Show Text Input'}
       </Button>}
       {isLicensePlateInputVisible && <LicensePlateInput onSubmit={handleLicensePlateSubmit} />}

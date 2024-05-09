@@ -4,7 +4,7 @@ import { Alert, Modal, Box, Button, Stack, TextField, Typography } from "@mui/ma
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import{v4 as uuidv4} from 'uuid';
 
-function pingApi(setSearchData, setCurrentVehAmount) {
+function getSearchData(setSearchData, setCurrentVehAmount) {
     fetch("/api/v1/getjoinedvehicle").then((rsp) => {
         rsp.json().then((obj) => {
             setSearchData(obj);
@@ -23,7 +23,7 @@ const SearchPage = () => {
   const [currentVehAmount, setCurrentVehAmount] = useState(0);
   const [userAlerts, setUserAlerts] = useState({});
   const [totalUserAttacks, setTotalUserAlerts] = useState(0);
-  useEffect(()=> {pingApi(setSearchData, setCurrentVehAmount)}, [])
+  useEffect(()=> {getSearchData(setSearchData, setCurrentVehAmount)}, [])
   
   const handleChange = (e) => {
     setSearchTerm(e.target.value);
@@ -32,14 +32,17 @@ const SearchPage = () => {
 
   const handleItemClick = (license) => {
     console.log('click successful for item with id:', license);
-    fetch(`/api/v1/updatevehicle?rh=${license}`).then((rsp) => {
-        method: "DELTE",
+    fetch(`/api/v1/updatevehicle?rh=${license}`, { 
+      method: "DELETE", 
+  }).then((rsp) => {
+    console.log("1");
         rsp.json().then((obj) => {
+          console.log("2");
           })
     }).catch((err) => {
       console.log(`Could not ping API - ${err}`)
     })
-    pingApi(setSearchData, setCurrentVehAmount)
+    getSearchData(setSearchData, setCurrentVehAmount)
     addAlert("success", `${license} has been successfully removed from the database`);
   };
 

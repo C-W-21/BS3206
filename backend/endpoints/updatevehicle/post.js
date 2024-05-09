@@ -23,7 +23,7 @@ module.exports = async function handler(req, res) {
                         reject(err);
                         return;
                     }
-                    
+                    res.json({})
                     console.log(results)
                     resolve()
                 })
