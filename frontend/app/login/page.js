@@ -31,6 +31,7 @@ export default function Login() {
 
     .then(data => {
         if (data.message === "success") {
+            sessionStorage.setItem('isLoggedIn', true);
             window.location.href = '/';
         } else {
             setLoginError(data.message || 'An error occurred during login');
