@@ -50,6 +50,9 @@ module.exports = routes = {
         },
         GET:{
             handler:"./endpoints/updatevehicle/get.js"
+        },
+        DELETE:{
+            handler:"./endpoints/updatevehicle/delete.js"
         }
     },
     "/getvehiclebyid":{
@@ -67,9 +70,14 @@ module.exports = routes = {
             handler:"./endpoints/getjoinedvehicle/get.js"
         }
     },
-    "/deletevehicle":{
-        GET:{
-            handler:"./endpoints/deletevehicle/get.js"
+    "/login": {
+        POST: {
+            handler: "./endpoints/login/post.js"
         }
+    },
+    "/signup": {
+        POST: {
+            handler: "./endpoints/signup/post.js",
+        },
     }
 };

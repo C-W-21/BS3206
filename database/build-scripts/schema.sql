@@ -79,12 +79,10 @@ CREATE TABLE IF NOT EXISTS `ims`.`vehicle_specifications` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `brand` VARCHAR(255) NOT NULL,
   `model` VARCHAR(255) NOT NULL,
-  `image` BLOB NULL,
   `emissions` DECIMAL(6,2) NOT NULL,
   `occupancy` INT NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
-  UNIQUE INDEX `brand_model_UNIQUE` (`brand` ASC, `model` ASC) VISIBLE)
 ENGINE = InnoDB;
 
 
@@ -216,16 +214,16 @@ CREATE TABLE IF NOT EXISTS `ims`.`vehicles_utility_specifications` (`license_pla
 
 DELIMITER $$
 USE `ims`$$
-CREATE PROCEDURE `UpdateVehicle` (id int, brand varchar(255), model varchar(255), image blob, emissions decimal(4,2), occupancy int)
+CREATE PROCEDURE `UpdateVehicle` (cid int, brand varchar(255), model varchar(255), emissions decimal(4,2), occupancy int)
 BEGIN
 if id is null
 	THEN
-    INSERT INTO vehicle_specificaitons(brand, model, image, emissions, occupancy)
-    VALUES (brand, model, image, emissions, occupancy);
+    INSERT INTO vehicle_specifications(brand, model, emissions, occupancy)
+    VALUES (brand, model, emissions, occupancy);
 else
-	UPDATE vehicle_specification
-    SET brand=brand, model=model, image=image, emissions=emissions, occupancy=occupancy
-    Where id=id;
+	UPDATE vehicle_specifications
+    SET brand=brand, model=model, emissions=emissions, occupancy=occupancy
+    Where id=cid;
 	END IF;
 END$$
 
