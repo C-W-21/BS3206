@@ -12,12 +12,14 @@ module.exports = async function handler(req, res) {
                 return;
             }
 
+            // Change to the login schema
             conn.changeUser({ database: "login" }, (err) => {
                 if (err) {
                     reject(err);
                     return;
                 }
-            
+                
+                // Run the above sql query and insert the username and password provided
                 conn.query(sql, [username, password], (err, data) => {
                     conn.release();
                     if(err) {

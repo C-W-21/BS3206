@@ -1,12 +1,16 @@
 function Validation(values) {
     let error = {}
-
-    if (values.username ==="") {
-        error.username = "Username should not be empty" 
+    
+    // Validate email is not empty and is the correct email address
+    if (values.username === "") {
+        error.username = "Username should not be empty";
+    } else if (!values.username.endsWith("@armydemo.com")) {
+        error.username = "Email address not valid";
     } else {
-        error.email = ""
+        error.username = "";
     }
 
+    // Validate password is  < 7 characters, 2 numbers and 1 special character
     const password = values.password.toString().trim();
     if (password === "") {
         error.password = "Password should not be empty";

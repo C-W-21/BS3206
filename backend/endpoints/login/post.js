@@ -12,7 +12,7 @@ module.exports = async function handler(req, res) {
                 reject(err);
                 return;
             }
-
+            // Change to the login schema
             conn.changeUser({ database: "login" }, (err) => {
                 if (err) {
                     reject(err);
@@ -28,10 +28,12 @@ module.exports = async function handler(req, res) {
                     if (data.length === 0) {
                         return res.status(401).json({ message: "Unauthorized" });
                     }
-
+                    
+                    // Compare the plain text password with the one hashed & salted in the database
                     const hashedPassword = data[0].password;
                     const passwordMatch = await bcrypt.compare(password.toString(), hashedPassword.toString());
 
+                    // If password is correct, return a success message else return an error messgae
                     if (passwordMatch) {
                         successMessage = "success"
                         res.json({ message: successMessage });
