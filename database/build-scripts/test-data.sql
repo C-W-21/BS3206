@@ -4,10 +4,10 @@ USE `ims`;
 
 INSERT INTO `vehicle_specifications` 
 VALUES 
-    (1,'Hyundai','i20',NULL,114.00,5),
-    (2,'Ford','Galaxy',NULL,166.00,7),
-    (3,'Mazda','MX5',NULL,212.50,2),
-    (4,'MG','F',NULL,55.00,2);
+    (1,'Hyundai','i20',114.00,5),
+    (2,'Ford','Galaxy',166.00,7),
+    (3,'Mazda','MX5',212.50,2),
+    (4,'MG','F',55.00,2);
 
 INSERT INTO `vehicles` 
 VALUES 
