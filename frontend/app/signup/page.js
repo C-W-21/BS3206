@@ -7,7 +7,7 @@ import Validation from "./validation";
 import signup from "./api";
 import bcrypt from 'bcryptjs';
 
-
+// Function to sign up a new user
 function SignUp() {
     const [values, setValues] = useState({
         username: '',
@@ -20,6 +20,8 @@ function SignUp() {
         setValues(prev => ({ ...prev, [event.target.name]: event.target.value }));
     };
 
+    // On submit run the validation script. If approved, encrypt the password and run the sign up api request
+    // Username and hashed and salted password will be stored in database and user will be redirected to login
     const handleSubmit = async (event) => {
         event.preventDefault();
 
@@ -51,7 +53,7 @@ function SignUp() {
                     <Typography variant="h1" align="center" style={{ color: '#000000', fontFamily: 'Helvetica' }} gutterBottom>Sign Up</Typography>
                     <form action="" onSubmit={handleSubmit}>
                     <Box mb={2}>
-                        <TextField label="User" name="username" onChange={handleInput} variant="outlined" fullWidth />
+                        <TextField label="Email" name="username" onChange={handleInput} variant="outlined" fullWidth />
                         <span style={{ color: 'red' }}>{errors.username}</span>
                     </Box>
                     <Box mb={2}>

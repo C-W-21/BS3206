@@ -2,6 +2,7 @@ const commHeaders = {
     "Content-Type": "application/json"
 }
 
+// redirect frontend to backend API 
 export async function signup(username, password) {
     const req = {
         username: username,

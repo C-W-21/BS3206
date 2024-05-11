@@ -2,6 +2,7 @@ const commHeaders = {
     "Content-Type": "application/json"
 }
 
+// redirect frontend to backend API 
 export async function LoginAPI(username, hashedPassword) {
     const req = {
         username: username,

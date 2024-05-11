@@ -7,7 +7,7 @@ import Validation from "./validation";
 import LoginAPI from "./api"
 import bcrypt from 'bcryptjs';
 
-
+// Function to login a user who has already signed up
 export default function Login() {
   const [values, setValues] = useState({
     username: '',
@@ -21,7 +21,8 @@ export default function Login() {
     setValues(prev => ({...prev, [event.target.name]: [event.target.value]}))
   }
 
-
+  // On submit, run the api request. Check the username and password to the one hashed and salted in the database
+  // Comparison is made in the backend. If successful, success message is returned and user is redirected to homepage
   const handleSubmit = async (event) => {
     event.preventDefault();
     setErrors(Validation(values));
@@ -50,7 +51,7 @@ export default function Login() {
                     <Typography variant="h1" align="center" style={{ color: '#000000', fontFamily: 'Helvetica' }} gutterBottom>Login</Typography>
                     <form action="" onSubmit={handleSubmit}>
                     <Box mb={2}>
-                        <TextField label="User" variant="outlined" name="username" onChange={handleInput} fullWidth />
+                        <TextField label="Email" variant="outlined" name="username" onChange={handleInput} fullWidth />
                         <span style={{ color: 'red' }}>{errors.username}</span>
                     </Box>
                     <Box mb={2}>
