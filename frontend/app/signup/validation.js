@@ -3,7 +3,7 @@ function Validation(values) {
     
     // Validate email is not empty and is the correct email address
     if (values.username === "") {
-        error.username = "Username should not be empty";
+        error.username = "Email should not be empty";
     } else if (!values.username.endsWith("@armydemo.com")) {
         error.username = "Email address not valid";
     } else {
