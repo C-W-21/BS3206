@@ -1,708 +1,939 @@
 {
 	"info": {
-		"_postman_id": "d5613daf-d897-4e4b-aa89-40339b7a9cb7",
+		"_postman_id": "558717c4-9bf3-4cf4-8ae5-16446fa6ed53",
 		"name": "BS3206",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30266899"
 	},
 	"item": [
 		{
-			"name": "UC00x TC001 - Route Archiving",
+			"name": "UC003 - Route Planning",
 			"item": [
 				{
-					"name": "Archive Route Meta",
-					"event": [
+					"name": "TC001 - Route Planning",
+					"item": [
 						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.environment.set(\"META_ID\", pm.response.json().meta_id);",
-									"pm.environment.set(\"META\", pm.request.body.raw);",
-									""
-								],
-								"type": "text/javascript"
-							}
+							"name": "TS001 Calculate Route (Easy)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const req = JSON.parse(pm.request.body);\r",
+											"const rsp = pm.response.json();\r",
+											"\r",
+											"pm.test(\"Body contains original waypoints\", function () {\r",
+											"    pm.expect(rsp.properties.waypoints[0]).to.eql(req.src);\r",
+											"    pm.expect(rsp.properties.waypoints[1]).to.eql(req.dest);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"src\": {\r\n        \"lat\": 51.248587,\r\n        \"lon\": -1.087913\r\n    },\r\n    \"dest\": {\r\n        \"lat\": 51.407998,\r\n        \"lon\": -0.776213\r\n    },\r\n    \"type\": \"less_maneuvers\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{ENDPOINT}}/route",
+									"protocol": "http",
+									"host": [
+										"{{ENDPOINT}}"
+									],
+									"path": [
+										"route"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TS002 Calculate Route (Efficient)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const req = JSON.parse(pm.request.body);\r",
+											"const rsp = pm.response.json();\r",
+											"\r",
+											"pm.test(\"Body contains original waypoints\", function () {\r",
+											"    pm.expect(rsp.properties.waypoints[0]).to.eql(req.src);\r",
+											"    pm.expect(rsp.properties.waypoints[1]).to.eql(req.dest);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"src\": {\r\n        \"lat\": 51.248587,\r\n        \"lon\": -1.087913\r\n    },\r\n    \"dest\": {\r\n        \"lat\": 51.407998,\r\n        \"lon\": -0.776213\r\n    },\r\n    \"type\": \"short\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{ENDPOINT}}/route",
+									"protocol": "http",
+									"host": [
+										"{{ENDPOINT}}"
+									],
+									"path": [
+										"route"
+									]
+								}
+							},
+							"response": []
 						}
 					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"occupants\": 4,\r\n    \"src\": {\r\n        \"lat\": 51.248587,\r\n        \"lon\": -1.087913\r\n    },\r\n    \"dest\": {\r\n        \"lat\": 51.407998,\r\n        \"lon\": -0.776213\r\n    }\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
 							}
 						},
-						"url": {
-							"raw": "http://{{ENDPOINT}}/route/archive",
-							"protocol": "http",
-							"host": [
-								"{{ENDPOINT}}"
-							],
-							"path": [
-								"route",
-								"archive"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get All Archived Meta",
-					"event": [
 						{
 							"listen": "test",
 							"script": {
+								"type": "text/javascript",
+								"packages": {},
 								"exec": [
-									"const metaId = pm.environment.get(\"META_ID\")",
-									"const expMeta = JSON.parse(pm.environment.get(\"META\"));",
-									"const rspObj = pm.response.json().find(obj => obj.meta_id === metaId)",
-									"",
-									"pm.test(\"Archived route metadata is present\", function () {",
-									"    pm.expect(rspObj).to.exist",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
 									"});",
 									"",
-									"pm.test(\"Archived route metadata is correct\", function() {",
-									"    pm.expect(rspObj[\"src\"]).to.eql(expMeta.src)",
-									"    pm.expect(rspObj[\"dest\"]).to.eql(expMeta.dest)",
-									"    pm.expect(rspObj[\"occupants\"]).to.eql(expMeta.occupants)",
-									"})",
+									"pm.test(\"JSON body is returned\", function () {",
+									"    pm.response.to.have.jsonBody();",
+									"});",
 									""
-								],
-								"type": "text/javascript"
+								]
 							}
 						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://{{ENDPOINT}}/route/archive",
-							"protocol": "http",
-							"host": [
-								"{{ENDPOINT}}"
-							],
-							"path": [
-								"route",
-								"archive"
-							]
-						}
-					},
-					"response": []
+					]
 				},
 				{
-					"name": "Calculate Route (Easy)",
-					"event": [
+					"name": "TC002 - Vehicle Selection",
+					"item": [
 						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"const req = JSON.parse(pm.request.body);\r",
-									"const rsp = pm.response.json();\r",
-									"\r",
-									"pm.environment.set(\"RT_EASY\", JSON.stringify(rsp.results[0]));\r",
-									"\r",
-									"pm.test(\"Body contains original waypoints\", function () {\r",
-									"    pm.expect(rsp.properties.waypoints[0]).to.eql(req.src);\r",
-									"    pm.expect(rsp.properties.waypoints[1]).to.eql(req.dest);\r",
-									"});\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"const metaObj = JSON.parse(pm.environment.get(\"META\"))",
-									"pm.environment.set(\"RT_SRC\", JSON.stringify(metaObj.src))",
-									"pm.environment.set(\"RT_DEST\", JSON.stringify(metaObj.dest))",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"src\": {{RT_SRC}},\r\n    \"dest\": {{RT_DEST}},\r\n    \"type\": \"less_maneuvers\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+							"name": "TS001 Create Vehicle Type (1)",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "[\r\n    null,\r\n    \"UC003TC002\",\r\n    \"TS001\",\r\n    75,\r\n    2\r\n]",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{ENDPOINT}}/updatevehicle",
+									"protocol": "http",
+									"host": [
+										"{{ENDPOINT}}"
+									],
+									"path": [
+										"updatevehicle"
+									]
 								}
-							}
-						},
-						"url": {
-							"raw": "http://{{ENDPOINT}}/route",
-							"protocol": "http",
-							"host": [
-								"{{ENDPOINT}}"
-							],
-							"path": [
-								"route"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Calculate Route (Efficient)",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"const req = JSON.parse(pm.request.body);\r",
-									"const rsp = pm.response.json();\r",
-									"\r",
-									"pm.environment.set(\"RT_EFFICIENT\", JSON.stringify(rsp.results[0]));\r",
-									"\r",
-									"pm.test(\"Body contains original waypoints\", function () {\r",
-									"    pm.expect(rsp.properties.waypoints[0]).to.eql(req.src);\r",
-									"    pm.expect(rsp.properties.waypoints[1]).to.eql(req.dest);\r",
-									"});\r",
-									""
-								],
-								"type": "text/javascript"
-							}
+							},
+							"response": []
 						},
 						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"const metaObj = JSON.parse(pm.environment.get(\"META\"))",
-									"pm.environment.set(\"RT_SRC\", JSON.stringify(metaObj.src))",
-									"pm.environment.set(\"RT_DEST\", JSON.stringify(metaObj.dest))",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"src\": {{RT_SRC}},\r\n    \"dest\": {{RT_DEST}},\r\n    \"type\": \"short\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+							"name": "TS002 Create Vehicle Type (2)",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "[\r\n    null,\r\n    \"UC003TC002\",\r\n    \"TS002\",\r\n    114,\r\n    5\r\n]",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{ENDPOINT}}/updatevehicle",
+									"protocol": "http",
+									"host": [
+										"{{ENDPOINT}}"
+									],
+									"path": [
+										"updatevehicle"
+									]
 								}
-							}
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "http://{{ENDPOINT}}/route",
-							"protocol": "http",
-							"host": [
-								"{{ENDPOINT}}"
-							],
-							"path": [
-								"route"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Archive Route (Easy)",
-					"event": [
 						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"const rsp = pm.response.json();",
-									"",
-									"pm.test(\"Response contains ID\", function () {",
-									"    pm.expect(rsp[\"route_id\"]).to.exist",
-									"})",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{{RT_EASY}}",
-							"options": {
-								"raw": {
-									"language": "json"
+							"name": "TS003 Get Vehicles Types",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const rspObj = pm.response.json();\r",
+											"pm.environment.set(\"VEHICLE_TYPES\", JSON.stringify(rspObj));\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
 								}
-							}
-						},
-						"url": {
-							"raw": "http://{{ENDPOINT}}/route/archive/{{META_ID}}",
-							"protocol": "http",
-							"host": [
-								"{{ENDPOINT}}"
 							],
-							"path": [
-								"route",
-								"archive",
-								"{{META_ID}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Archive Route (Efficient)",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"const rsp = pm.response.json();",
-									"",
-									"pm.test(\"Response contains ID\", function () {",
-									"    pm.expect(rsp[\"route_id\"]).to.exist",
-									"})",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{{RT_EFFICIENT}}",
-							"options": {
-								"raw": {
-									"language": "json"
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://{{ENDPOINT}}/updatevehicle",
+									"protocol": "http",
+									"host": [
+										"{{ENDPOINT}}"
+									],
+									"path": [
+										"updatevehicle"
+									]
 								}
-							}
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "http://{{ENDPOINT}}/route/archive/{{META_ID}}",
-							"protocol": "http",
-							"host": [
-								"{{ENDPOINT}}"
-							],
-							"path": [
-								"route",
-								"archive",
-								"{{META_ID}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Both Archived Routes",
-					"event": [
 						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"const rsp = pm.response.json();",
-									"const expMeta = JSON.parse(pm.environment.get(\"META\"))",
-									"",
-									"pm.test(\"Routes are returned\", function () {",
-									"    pm.expect(rsp[\"results\"]).to.exist;",
-									"    pm.expect(rsp[\"results\"].length).to.eql(2);",
-									"})",
-									"",
-									"pm.test(\"Meta is returned\", function () {",
-									"    pm.expect(rsp[\"properties\"]).to.exist;",
-									"    pm.expect(rsp[\"properties\"][\"waypoints\"]).to.exist;",
-									"})",
-									"",
-									"pm.test(\"Routes are accurate\", function () {",
-									"    let rtEasy = rsp[\"results\"][0];",
-									"    delete rtEasy.legs;",
-									"    delete rtEasy.id;",
-									"    let expRtEasy = JSON.parse(pm.environment.get(\"RT_EASY\"));",
-									"    delete expRtEasy.legs;",
-									"    pm.expect(rtEasy).to.eql(expRtEasy);",
-									"",
-									"    let rtEfficient = rsp[\"results\"][1];",
-									"    delete rtEfficient.legs;",
-									"    delete rtEfficient.id;",
-									"    let expRtEfficient = JSON.parse(pm.environment.get(\"RT_EFFICIENT\"));",
-									"    delete expRtEfficient.legs;",
-									"    pm.expect(rtEfficient).to.eql(expRtEfficient);",
-									"})",
-									"",
-									"pm.test(\"Meta is accurate\", function () {",
-									"    const wayPts = rsp[\"properties\"][\"waypoints\"];",
-									"    pm.expect(wayPts[0]).to.eql(expMeta.src);",
-									"    pm.expect(wayPts[1]).to.eql(expMeta.dest);",
-									"})"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://{{ENDPOINT}}/route/archive/{{META_ID}}",
-							"protocol": "http",
-							"host": [
-								"{{ENDPOINT}}"
-							],
-							"path": [
-								"route",
-								"archive",
-								"{{META_ID}}"
-							]
-						}
-					},
-					"response": []
-				}
-			],
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							"pm.test(\"JSON body is returned\", function () {",
-							"    pm.response.to.have.jsonBody();",
-							"});",
-							""
-						]
-					}
-				}
-			]
-		},
-		{
-			"name": "UC00x TC002 - Route Finding and Vehicle Assignment",
-			"item": [
-				{
-					"name": "Archive Route Meta",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.environment.set(\"META_ID\", pm.response.json().meta_id);",
-									"pm.environment.set(\"META\", pm.request.body.raw);",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"occupants\": 4,\r\n    \"src\": {\r\n        \"lat\": 51.248587,\r\n        \"lon\": -1.087913\r\n    },\r\n    \"dest\": {\r\n        \"lat\": 51.407998,\r\n        \"lon\": -0.776213\r\n    }\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+							"name": "TS004 Create Vehicle (A)",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const allTypes = JSON.parse(pm.environment.get(\"VEHICLE_TYPES\"));\r",
+											"pm.environment.set(\"TYPE_ID\", allTypes.find(obj => obj.brand == \"UC003TC002\" && obj.model == \"TS001\").id);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
 								}
-							}
-						},
-						"url": {
-							"raw": "http://{{ENDPOINT}}/route/archive",
-							"protocol": "http",
-							"host": [
-								"{{ENDPOINT}}"
 							],
-							"path": [
-								"route",
-								"archive"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Calculate Route",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"const req = JSON.parse(pm.request.body);\r",
-									"const rsp = pm.response.json();\r",
-									"\r",
-									"pm.environment.set(\"RT\", JSON.stringify(rsp.results[0]));\r",
-									"\r",
-									"pm.test(\"Body contains original waypoints\", function () {\r",
-									"    pm.expect(rsp.properties.waypoints[0]).to.eql(req.src);\r",
-									"    pm.expect(rsp.properties.waypoints[1]).to.eql(req.dest);\r",
-									"});\r",
-									""
-								],
-								"type": "text/javascript"
-							}
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "[\r\n    \"AA00 AAA\",\r\n    {{TYPE_ID}}\r\n]",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{ENDPOINT}}/createvehicle",
+									"protocol": "http",
+									"host": [
+										"{{ENDPOINT}}"
+									],
+									"path": [
+										"createvehicle"
+									]
+								}
+							},
+							"response": []
 						},
 						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"const metaObj = JSON.parse(pm.environment.get(\"META\"))",
-									"pm.environment.set(\"RT_SRC\", JSON.stringify(metaObj.src))",
-									"pm.environment.set(\"RT_DEST\", JSON.stringify(metaObj.dest))",
-									""
-								],
-								"type": "text/javascript"
-							}
+							"name": "TS005 Create Vehicle (B)",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const allTypes = JSON.parse(pm.environment.get(\"VEHICLE_TYPES\"));\r",
+											"pm.environment.set(\"TYPE_ID\", allTypes.find(obj => obj.brand == \"UC003TC002\" && obj.model == \"TS001\").id);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "[\r\n    \"AA00 AAB\",\r\n    {{TYPE_ID}}\r\n]",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{ENDPOINT}}/createvehicle",
+									"protocol": "http",
+									"host": [
+										"{{ENDPOINT}}"
+									],
+									"path": [
+										"createvehicle"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TS006 Create Vehicle (C)",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const allTypes = JSON.parse(pm.environment.get(\"VEHICLE_TYPES\"));\r",
+											"pm.environment.set(\"TYPE_ID\", allTypes.find(obj => obj.brand == \"UC003TC002\" && obj.model == \"TS002\").id);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "[\r\n    \"AA00 AAC\",\r\n    {{TYPE_ID}}\r\n]",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{ENDPOINT}}/createvehicle",
+									"protocol": "http",
+									"host": [
+										"{{ENDPOINT}}"
+									],
+									"path": [
+										"createvehicle"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TS007 Calculate Route",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const req = JSON.parse(pm.request.body);\r",
+											"const rsp = pm.response.json();\r",
+											"\r",
+											"pm.environment.set(\"RT\", JSON.stringify(rsp.results[0]));\r",
+											"\r",
+											"pm.test(\"Body contains original waypoints\", function () {\r",
+											"    pm.expect(rsp.properties.waypoints[0]).to.eql(req.src);\r",
+											"    pm.expect(rsp.properties.waypoints[1]).to.eql(req.dest);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"src\": {\r\n        \"lat\": 51.248587,\r\n        \"lon\": -1.087913\r\n    },\r\n    \"dest\": {\r\n        \"lat\": 51.407998,\r\n        \"lon\": -0.776213\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{ENDPOINT}}/route",
+									"protocol": "http",
+									"host": [
+										"{{ENDPOINT}}"
+									],
+									"path": [
+										"route"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TS008 Calculate Best Vehicles",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const distance = JSON.parse(pm.environment.get(\"RT\")).distance\r",
+											"pm.environment.set(\"RT_DIST\", distance);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const rsp = pm.response.json();\r",
+											"\r",
+											"pm.test(\"Selected vehicles are correct\", function () {\r",
+											"    const vehicles = Object.keys(rsp.vehicles)\r",
+											"    pm.expect(vehicles).to.have.lengthOf(1)\r",
+											"    pm.expect(vehicles[0]).to.eql(\"AA00 AAC\");\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"distance\": {{RT_DIST}},\r\n    \"occupants\": 3\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{ENDPOINT}}/route/vehicles",
+									"protocol": "http",
+									"host": [
+										"{{ENDPOINT}}"
+									],
+									"path": [
+										"route",
+										"vehicles"
+									]
+								}
+							},
+							"response": []
 						}
 					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"src\": {{RT_SRC}},\r\n    \"dest\": {{RT_DEST}}\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://{{ENDPOINT}}/route",
-							"protocol": "http",
-							"host": [
-								"{{ENDPOINT}}"
-							],
-							"path": [
-								"route"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Archive Route",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"const rsp = pm.response.json();",
-									"",
-									"pm.environment.set(\"RT_ID\", rsp.route_id);",
-									"",
-									"pm.test(\"Response contains ID\", function () {",
-									"    pm.expect(rsp[\"route_id\"]).to.exist",
-									"})",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{{RT}}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://{{ENDPOINT}}/route/archive/{{META_ID}}",
-							"protocol": "http",
-							"host": [
-								"{{ENDPOINT}}"
-							],
-							"path": [
-								"route",
-								"archive",
-								"{{META_ID}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Calculate Best Vehicles",
 					"event": [
 						{
 							"listen": "prerequest",
 							"script": {
+								"type": "text/javascript",
+								"packages": {},
 								"exec": [
-									"const distance = JSON.parse(pm.environment.get(\"RT\")).distance\r",
-									"const occupants = JSON.parse(pm.environment.get(\"META\")).occupants\r",
-									"\r",
-									"pm.environment.set(\"RT_DIST\", distance);\r",
-									"pm.environment.set(\"RT_OCC\", occupants);"
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"const rsp = pm.response.json();\r",
-									"\r",
-									"pm.environment.set(\"RT_VEHICLES\", pm.response.text());\r",
 									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"distance\": {{RT_DIST}},\r\n    \"occupants\": {{RT_OCC}} \r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
+								]
 							}
 						},
-						"url": {
-							"raw": "http://{{ENDPOINT}}/route/vehicles",
-							"protocol": "http",
-							"host": [
-								"{{ENDPOINT}}"
-							],
-							"path": [
-								"route",
-								"vehicles"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Archive Vehicles",
-					"event": [
 						{
 							"listen": "test",
 							"script": {
+								"type": "text/javascript",
+								"packages": {},
 								"exec": [
-									"const rsp = pm.response.json();",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{{RT_VEHICLES}}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://{{ENDPOINT}}/route/archive/{{META_ID}}/{{RT_ID}}/vehicles",
-							"protocol": "http",
-							"host": [
-								"{{ENDPOINT}}"
-							],
-							"path": [
-								"route",
-								"archive",
-								"{{META_ID}}",
-								"{{RT_ID}}",
-								"vehicles"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Archived Vehicles",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"const rsp = pm.response.json();",
-									"const expMeta = JSON.parse(pm.environment.get(\"META\"))",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
 									"",
+									"pm.test(\"JSON body is returned\", function () {",
+									"    pm.response.to.have.jsonBody();",
+									"});",
 									""
-								],
-								"type": "text/javascript"
+								]
 							}
 						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://{{ENDPOINT}}/route/archive/{{META_ID}}/{{RT_ID}}/vehicles",
-							"protocol": "http",
-							"host": [
-								"{{ENDPOINT}}"
-							],
-							"path": [
-								"route",
-								"archive",
-								"{{META_ID}}",
-								"{{RT_ID}}",
-								"vehicles"
-							]
-						}
-					},
-					"response": []
-				}
-			],
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
+					]
 				},
 				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							"pm.test(\"JSON body is returned\", function () {",
-							"    pm.response.to.have.jsonBody();",
-							"});",
-							""
-						]
-					}
+					"name": "TC003 - Route Archiving",
+					"item": [
+						{
+							"name": "TS001 Archive Route Meta",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.environment.set(\"META_ID\", pm.response.json().meta_id);",
+											"pm.environment.set(\"META\", pm.request.body.raw);",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"occupants\": 4,\r\n    \"src\": {\r\n        \"lat\": 51.248587,\r\n        \"lon\": -1.087913\r\n    },\r\n    \"dest\": {\r\n        \"lat\": 51.407998,\r\n        \"lon\": -0.776213\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{ENDPOINT}}/route/archive",
+									"protocol": "http",
+									"host": [
+										"{{ENDPOINT}}"
+									],
+									"path": [
+										"route",
+										"archive"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TS002 Get Archived Meta",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const metaId = pm.environment.get(\"META_ID\")",
+											"const expMeta = JSON.parse(pm.environment.get(\"META\"));",
+											"const rspObj = pm.response.json().find(obj => obj.meta_id === metaId)",
+											"",
+											"pm.test(\"Archived route metadata is present\", function () {",
+											"    pm.expect(rspObj).to.exist",
+											"});",
+											"",
+											"pm.test(\"Archived route metadata is correct\", function() {",
+											"    pm.expect(rspObj[\"src\"]).to.eql(expMeta.src)",
+											"    pm.expect(rspObj[\"dest\"]).to.eql(expMeta.dest)",
+											"    pm.expect(rspObj[\"occupants\"]).to.eql(expMeta.occupants)",
+											"})",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://{{ENDPOINT}}/route/archive",
+									"protocol": "http",
+									"host": [
+										"{{ENDPOINT}}"
+									],
+									"path": [
+										"route",
+										"archive"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TS003 Calculate Route",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const req = JSON.parse(pm.request.body);\r",
+											"const rsp = pm.response.json();\r",
+											"\r",
+											"pm.environment.set(\"RT\", JSON.stringify(rsp.results[0]));\r",
+											"\r",
+											"pm.test(\"Body contains original waypoints\", function () {\r",
+											"    pm.expect(rsp.properties.waypoints[0]).to.eql(req.src);\r",
+											"    pm.expect(rsp.properties.waypoints[1]).to.eql(req.dest);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const metaObj = JSON.parse(pm.environment.get(\"META\"))",
+											"pm.environment.set(\"RT_SRC\", JSON.stringify(metaObj.src))",
+											"pm.environment.set(\"RT_DEST\", JSON.stringify(metaObj.dest))",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"src\": {{RT_SRC}},\r\n    \"dest\": {{RT_DEST}}\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{ENDPOINT}}/route",
+									"protocol": "http",
+									"host": [
+										"{{ENDPOINT}}"
+									],
+									"path": [
+										"route"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TS004 Archive Route",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const rsp = pm.response.json();",
+											"",
+											"pm.environment.set(\"RT_ID\", rsp.route_id);",
+											"",
+											"pm.test(\"Response contains ID\", function () {",
+											"    pm.expect(rsp[\"route_id\"]).to.exist",
+											"})",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{{RT}}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{ENDPOINT}}/route/archive/{{META_ID}}",
+									"protocol": "http",
+									"host": [
+										"{{ENDPOINT}}"
+									],
+									"path": [
+										"route",
+										"archive",
+										"{{META_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TS005 Get Archived Route",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const rsp = pm.response.json();",
+											"const expMeta = JSON.parse(pm.environment.get(\"META\"))",
+											"",
+											"pm.test(\"Route is returned\", function () {",
+											"    pm.expect(rsp[\"results\"]).to.exist;",
+											"    pm.expect(rsp[\"results\"].length).to.eql(1);",
+											"})",
+											"",
+											"pm.test(\"Meta is returned\", function () {",
+											"    pm.expect(rsp[\"properties\"]).to.exist;",
+											"    pm.expect(rsp[\"properties\"][\"waypoints\"]).to.exist;",
+											"})",
+											"",
+											"pm.test(\"Route is accurate\", function () {",
+											"    let rt = rsp[\"results\"][0];",
+											"    delete rt.legs;",
+											"    delete rt.id;",
+											"    let expRt = JSON.parse(pm.environment.get(\"RT\"));",
+											"    delete expRt.legs;",
+											"    pm.expect(rt).to.eql(expRt);",
+											"})",
+											"",
+											"pm.test(\"Meta is accurate\", function () {",
+											"    const wayPts = rsp[\"properties\"][\"waypoints\"];",
+											"    pm.expect(wayPts[0]).to.eql(expMeta.src);",
+											"    pm.expect(wayPts[1]).to.eql(expMeta.dest);",
+											"})"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://{{ENDPOINT}}/route/archive/{{META_ID}}",
+									"protocol": "http",
+									"host": [
+										"{{ENDPOINT}}"
+									],
+									"path": [
+										"route",
+										"archive",
+										"{{META_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TS006 Calculate Best Vehicles",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const distance = JSON.parse(pm.environment.get(\"RT\")).distance\r",
+											"const occupants = JSON.parse(pm.environment.get(\"META\")).occupants\r",
+											"\r",
+											"pm.environment.set(\"RT_DIST\", distance);\r",
+											"pm.environment.set(\"RT_OCC\", occupants);"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const rsp = pm.response.json();\r",
+											"\r",
+											"pm.environment.set(\"RT_VEHICLES\", pm.response.text());\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"distance\": {{RT_DIST}},\r\n    \"occupants\": {{RT_OCC}} \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{ENDPOINT}}/route/vehicles",
+									"protocol": "http",
+									"host": [
+										"{{ENDPOINT}}"
+									],
+									"path": [
+										"route",
+										"vehicles"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TS007 Archive Vehicles",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{{RT_VEHICLES}}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{ENDPOINT}}/route/archive/{{META_ID}}/{{RT_ID}}/vehicles",
+									"protocol": "http",
+									"host": [
+										"{{ENDPOINT}}"
+									],
+									"path": [
+										"route",
+										"archive",
+										"{{META_ID}}",
+										"{{RT_ID}}",
+										"vehicles"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TS008 Get Archived Vehicles",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const rsp = pm.response.json();",
+											"const expRsp = JSON.parse(pm.environment.get(\"RT_VEHICLES\"))",
+											"",
+											"pm.test(\"Vehicles are returned\", function() {",
+											"    pm.expect(rsp[\"vehicles\"]).to.exist;",
+											"    pm.expect(Object.keys(rsp.vehicles).length).to.be.greaterThan(0);",
+											"});",
+											"",
+											"pm.test(\"Vehicles are accurate\", function () {",
+											"    pm.expect(rsp[\"vehicles\"]).to.exist;",
+											"    pm.expect(Object.keys(rsp.vehicles)).to.eql(Object.keys(expRsp.vehicles));",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://{{ENDPOINT}}/route/archive/{{META_ID}}/{{RT_ID}}/vehicles",
+									"protocol": "http",
+									"host": [
+										"{{ENDPOINT}}"
+									],
+									"path": [
+										"route",
+										"archive",
+										"{{META_ID}}",
+										"{{RT_ID}}",
+										"vehicles"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"JSON body is returned\", function () {",
+									"    pm.response.to.have.jsonBody();",
+									"});",
+									""
+								]
+							}
+						}
+					]
 				}
 			]
 		},
