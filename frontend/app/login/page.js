@@ -40,6 +40,7 @@ export default function Login() {
             console.log(data.message)
             setLoginError('An error occurred during login');
           }
+        })
       .catch(error => {
           console.error('Error during login:', error);
           setLoginError('An error occurred during login');
