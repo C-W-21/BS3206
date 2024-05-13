@@ -1,0 +1,14 @@
+{
+  "name": "bs3206",
+  "version": "1.0.0",
+  "description": "1. [Install docker](https://docs.docker.com/engine/install/). If installing the CLI version, ensure docker compose is also installed. In the terminal, run `docker compose version` to ensure all is ok before proceeding.\r 1. Install the `make` package via the package manager for your OS. If using mac, this will be [Homebrew](https://brew.sh) or [Chocolatey](https://chocolatey.org) for windows, if these are not already installed then you will need to do this first. In a terminal, run `make --version` to ensure it's installed successfully.",
+  "main": "index.js",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.44.0",
+    "@types/node": "^20.12.11"
+  }
+}

@@ -26,7 +26,7 @@ module.exports = async function handler(req, res) {
                     }
 
                     if (data.length === 0) {
-                        return res.status(401).json({ message: "Unauthorized" });
+                        return res.status(401).json();
                     }
                     
                     // Compare the plain text password with the one hashed & salted in the database
