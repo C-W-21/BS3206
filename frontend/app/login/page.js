@@ -35,7 +35,7 @@ export default function Login() {
             sessionStorage.setItem('isLoggedIn', true);
             window.location.href = '/';
         } else {
-            setLoginError(data.message || 'An error occurred during login');
+            setLoginError('Username, Password, or both are incorrect');
         }
     })
       .catch(error => {
