@@ -34,9 +34,12 @@ export default function Login() {
         if (data.message === "success") {
             sessionStorage.setItem('isLoggedIn', true);
             window.location.href = '/';
-        } else {
+        } else if (data.message === "incorrect_credentials") {
             setLoginError('Username, Password, or both are incorrect');
-        }
+          } else {
+            console.log(data.message)
+            setLoginError('An error occurred during login');
+          }
     })
       .catch(error => {
           console.error('Error during login:', error);

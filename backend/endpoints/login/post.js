@@ -26,7 +26,7 @@ module.exports = async function handler(req, res) {
                     }
 
                     if (data.length === 0) {
-                        return res.status(401).json();
+                        return res.status(401).json({ message: "incorrect_credentials" });
                     }
                     
                     // Compare the plain text password with the one hashed & salted in the database
@@ -38,7 +38,7 @@ module.exports = async function handler(req, res) {
                         successMessage = "success"
                         res.json({ message: successMessage });
                     } else {
-                        res.status(401).json({ message: "Password, Username or both are incorrect" });
+                        res.status(401).json({ message: "incorrect_credentials" });
                     }
 
                     resolve();
