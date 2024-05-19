@@ -3,6 +3,11 @@ import { Box, Button, Typography, ThemeProvider } from "@mui/material";
 import theme from "./theme";
 
 const CommonLayout = ({ title, children }) => {
+
+    const handleSignOut = () => {
+        sessionStorage.clear();
+      };
+
     return (
         <ThemeProvider theme={theme}>
         <Box display="flex" flexDirection="column" alignItems="center" sx={{ height: "100vh", width: "100vw" }}>
@@ -13,7 +18,7 @@ const CommonLayout = ({ title, children }) => {
             <Button href="/management-search" style={{ marginLeft: '5px', color: '#ffffff' }}>Specs</Button>
             <Button href="/vehicle-search" style={{ marginLeft: '5px', color: '#ffffff' }}>Vehicles</Button>
             <Typography variant="h1" align="center" style={{ marginRight: ' 200px', fontFamily: 'Helvetica', fontSize: '35px', flexGrow: 0.75 }}>{title}</Typography>
-            <Button href="/login" style={{ marginLeft: 'auto', color: '#ffffff' }}>Sign Out</Button>
+            <Button onClick={handleSignOut} href="/login" style={{ marginLeft: 'auto', color: '#ffffff' }}>Sign Out</Button>
             </Box>
 
             <Box width="80%" bgcolor="white" p={2} mt={1} mb={0}>
