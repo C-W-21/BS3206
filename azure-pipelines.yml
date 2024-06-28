@@ -12,18 +12,29 @@ variables:
   tag: '$(Build.BuildId)'
 
 stages:
-- stage: Build
-  displayName: Build image
-  jobs:
-  - job: Build
+  - stage: Build
+    displayName: Build image
+    jobs:
+    - job: Build
+      displayName: Build
+      pool:
+        vmImage: ubuntu-latest
+      steps:
+      - task: Docker@2
+        displayName: Build an image
+        inputs:
+          command: build
+          dockerfile: '**/Dockerfile'
+          tags: |
+            $(tag)
+
+  - stage: Build2
     displayName: Build
-    pool:
-      vmImage: ubuntu-latest
-    steps:
-    - task: Docker@2
-      displayName: Build an image
-      inputs:
-        command: build
-        dockerfile: '**/Dockerfile'
-        tags: |
-          $(tag)
+    jobs:
+    
+      - job: docker_imgs
+        displayName: Docker Images
+        steps:
+          - script: docker compose -f docker/docker-compose.yaml build 
+            displayName: Run Build
+            
